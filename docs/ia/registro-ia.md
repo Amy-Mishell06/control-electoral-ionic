@@ -9,3 +9,4 @@ Registro de cómo usé herramientas de IA durante el desarrollo, para la entrega
 | 2026-11-22 | Claude | Recuperación de contraseña por correo | Código OTP y SMTP con Brevo | Acepté Brevo; Gmail como plan B | Documentado en ADR-011 |
 | 2026-11-23 | Claude | Nombre, mascota y colores de la app | Cuatro identidades con bocetos | Elegí Yupana, oso de anteojos, azul petróleo y Outfit | Comparé los bocetos y el contraste |
 | 2026-11-24 | Claude | Patrón de huellas de oso para los encabezados | SVG con huellas dispersas y clases CSS | Cambié la huella por mi referencia y pedí más dispersión | Probado con `ionic serve` |
+| 2026-11-24 | Claude | Reglas de cédula y suma del acta | Funciones puras en core/domain/rules con pruebas | Acepté; ajusté los mensajes de error | 9 pruebas aprobadas con `ng test` |
