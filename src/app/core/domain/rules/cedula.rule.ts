@@ -8,12 +8,12 @@ export function validarCedula(cedula: string): string | null {
   const limpia = cedula.trim();
 
   if (!/^\d{10}$/.test(limpia)) {
-    return 'La cédula debe tener 10 números.';
+    return 'La cédula debe tener al menos 10 números.';
   }
 
   const provincia = Number(limpia.substring(0, 2));
   if (!((provincia >= 1 && provincia <= 24) || provincia === 30)) {
-    return 'Los dos primeros números no corresponden a una provincia.';
+    return 'Los dos primeros números no corresponden a una provincia, VERIFICA..!!';
   }
 
   if (Number(limpia[2]) >= 6) {
@@ -32,7 +32,7 @@ export function validarCedula(cedula: string): string | null {
   const verificador = (10 - (suma % 10)) % 10;
 
   if (verificador !== Number(limpia[9])) {
-    return 'La cédula no es válida. Revisa los números.';
+    return 'La cédula no es válida. Verifica los números.';
   }
 
   return null;
