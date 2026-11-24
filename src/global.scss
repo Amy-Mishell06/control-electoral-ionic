@@ -9,6 +9,14 @@
  * https://ionicframework.com/docs/layout/global-stylesheets
  */
 
+/* Fuente Outfit */
+@font-face {
+  font-family: 'Outfit';
+  src: url('/assets/fonts/Outfit-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
 /* Core CSS required for Ionic components to work properly */
 @import "@ionic/angular/css/core.css";
 
@@ -34,4 +42,20 @@
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import '@ionic/angular/css/palettes/dark.system.css';
+//@import '@ionic/angular/css/palettes/dark.system.css';
+
+/* ===== Patrón de huellas de oso (docs/design/identidad.md) =====
+   Solo en encabezados y fondos de marca.*/
+
+/* Para cualquier contenedor*/
+.fondo-huellas {
+  background-color: #155e75;
+  background-image: url('/assets/patrones/huellas-oso.svg');
+  background-repeat: repeat;
+}
+
+/* Para la barra superior de Ionic */
+ion-toolbar.huellas {
+  --background: #155e75 url('/assets/patrones/huellas-oso.svg') repeat;
+  --color: #ffffff;
+}

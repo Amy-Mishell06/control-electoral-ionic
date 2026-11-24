@@ -1,2 +1,117 @@
-// For information on how to create your own theme, please refer to:
-// https://ionicframework.com/docs/theming/
+// Identidad visual de Yupana (docs/design/identidad.md)
+// Variantes -shade (12 % más oscuro) y -tint (10 % más claro) calculadas
+// con la misma fórmula del generador de colores de Ionic.
+
+:root {
+  /* Marca */
+  --ion-color-primary: #155e75;
+  --ion-color-primary-rgb: 21, 94, 117;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #125367;
+  --ion-color-primary-tint: #2c6e83;
+
+  --ion-color-secondary: #7c4a2d;
+  --ion-color-secondary-rgb: 124, 74, 45;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #6d4128;
+  --ion-color-secondary-tint: #895c42;
+
+  /* Estados (iguales en todas las identidades del grupo) */
+  --ion-color-success: #15803d;
+  --ion-color-success-rgb: 21, 128, 61;
+  --ion-color-success-contrast: #ffffff;
+  --ion-color-success-contrast-rgb: 255, 255, 255;
+  --ion-color-success-shade: #127136;
+  --ion-color-success-tint: #2c8d50;
+
+  --ion-color-warning: #b45309;
+  --ion-color-warning-rgb: 180, 83, 9;
+  --ion-color-warning-contrast: #ffffff;
+  --ion-color-warning-contrast-rgb: 255, 255, 255;
+  --ion-color-warning-shade: #9e4908;
+  --ion-color-warning-tint: #bc6422;
+
+  --ion-color-danger: #b91c1c;
+  --ion-color-danger-rgb: 185, 28, 28;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade: #a31919;
+  --ion-color-danger-tint: #c03333;
+
+  /* Superficies */
+  --ion-background-color: #f7f4f0;
+  --ion-background-color-rgb: 247, 244, 240;
+  --ion-text-color: #1f2937;
+  --ion-text-color-rgb: 31, 41, 55;
+  --ion-card-background: #ffffff;
+  --ion-item-background: #ffffff;
+  --ion-toolbar-background: #155e75;
+  --ion-toolbar-color: #ffffff;
+
+  /* Propios de la app */
+  --app-superficie: #ffffff;
+  --app-texto-secundario: #5b6472;
+  --app-font-titulos: 'Outfit', system-ui, sans-serif;
+  --app-font-texto: 'Outfit', system-ui, sans-serif;
+  --app-radio: 16px;
+  --app-espacio: 16px;
+  --app-boton-alto: 52px;
+  --app-sombra-tarjeta: 0 8px 24px rgba(15, 23, 42, 0.06);
+
+  --ion-font-family: var(--app-font-texto);
+}
+
+/* Modo oscuro: sigue la configuración del celular */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ion-color-primary: #5fb8cc;
+    --ion-color-primary-rgb: 95, 184, 204;
+    --ion-color-primary-contrast: #0b1f24;
+    --ion-color-primary-contrast-rgb: 11, 31, 36;
+    --ion-color-primary-shade: #54a2b4;
+    --ion-color-primary-tint: #6fbfd1;
+
+    --ion-color-secondary: #d19a72;
+    --ion-color-secondary-rgb: 209, 154, 114;
+    --ion-color-secondary-contrast: #0b1f24;
+    --ion-color-secondary-contrast-rgb: 11, 31, 36;
+    --ion-color-secondary-shade: #b88864;
+    --ion-color-secondary-tint: #d6a480;
+
+    --ion-color-success: #4ade80;
+    --ion-color-success-rgb: 74, 222, 128;
+    --ion-color-success-contrast: #0b1f24;
+    --ion-color-success-contrast-rgb: 11, 31, 36;
+    --ion-color-success-shade: #41c371;
+    --ion-color-success-tint: #5ce18d;
+
+    --ion-color-warning: #fbbf24;
+    --ion-color-warning-rgb: 251, 191, 36;
+    --ion-color-warning-contrast: #0b1f24;
+    --ion-color-warning-contrast-rgb: 11, 31, 36;
+    --ion-color-warning-shade: #dda820;
+    --ion-color-warning-tint: #fbc53a;
+
+    --ion-color-danger: #f87171;
+    --ion-color-danger-rgb: 248, 113, 113;
+    --ion-color-danger-contrast: #0b1f24;
+    --ion-color-danger-contrast-rgb: 11, 31, 36;
+    --ion-color-danger-shade: #da6363;
+    --ion-color-danger-tint: #f97f7f;
+
+    --ion-background-color: #0e1a1d;
+    --ion-background-color-rgb: 14, 26, 29;
+    --ion-text-color: #e6eef0;
+    --ion-text-color-rgb: 230, 238, 240;
+    --ion-card-background: #16262a;
+    --ion-item-background: #16262a;
+    --ion-toolbar-background: #16262a;
+    --ion-toolbar-color: #e6eef0;
+
+    --app-superficie: #16262a;
+    --app-texto-secundario: #a3b3b8;
+    --app-sombra-tarjeta: 0 8px 24px rgba(0, 0, 0, 0.35);
+  }
+}
