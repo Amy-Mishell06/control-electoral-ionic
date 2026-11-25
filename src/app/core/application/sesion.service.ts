@@ -30,6 +30,34 @@ export class SesionService {
     this._perfil.set(null);
   }
 
+    /** Paso 1 de la activación: envía el código al correo del usuario (ADR-011). */
+  async enviarCodigoActivacion(): Promise<void> {
+    const perfil = this._perfil();
+    if (!perfil) {
+      throw new Error('Tu sesión terminó. Vuelve a iniciar sesión.');
+    }
+    await this.auth.enviarCodigo(perfil.correo);
+  }
+
+  /** Paso 2: verifica el código de 6 dígitos. */
+  async verificarCodigoActivacion(codigo: string): Promise<void> {
+    const perfil = this._perfil();
+    if (!perfil) {
+      throw new Error('Tu sesión terminó. Vuelve a iniciar sesión.');
+    }
+    await this.auth.verificarCodigo(perfil.correo, codigo);
+  }
+
+  /** Paso 3: guarda la nueva contraseña y marca la cuenta como activada. */
+  async completarActivacion(claveNueva: string): Promise<void> {
+    await this.auth.cambiarClave(claveNueva);
+    await this.auth.activarCuenta();
+    const actual = this._perfil();
+    if (actual) {
+      this._perfil.set({ ...actual, debeCambiarClave: false, correoVerificado: true });
+    }
+  }
+
   /** A dónde va cada usuario después de iniciar sesión (ADR-007). */
   rutaInicio(perfil: Perfil | null = this._perfil()): string {
     if (!perfil) {
@@ -54,3 +82,4 @@ export class SesionService {
     }
   }
 }
+

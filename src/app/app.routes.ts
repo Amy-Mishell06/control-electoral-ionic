@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import {
-  authGuard, cambioClaveGuard, invitadoGuard, rolGuard,
+  authGuard, cambioClaveGuard, invitadoGuard, rolGuard, activacionPendienteGuard,
 } from './presentation/shared/guards/sesion.guards';
 
 const enConstruccion = () =>
@@ -17,9 +17,10 @@ export const routes: Routes = [
   },
   {
     path: 'activar-cuenta',
-    canActivate: [authGuard],
-    loadComponent: enConstruccion,
-    data: { titulo: 'Activar cuenta' },
+    canActivate: [authGuard, activacionPendienteGuard],
+    loadComponent: () =>
+      import('./presentation/auth/activar-cuenta/activar-cuenta.page')
+        .then((m) => m.ActivarCuentaPage),
   },
   {
     path: 'provincial',

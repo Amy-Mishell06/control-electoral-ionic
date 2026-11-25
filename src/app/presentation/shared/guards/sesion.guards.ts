@@ -34,3 +34,11 @@ export function rolGuard(...roles: Rol[]): CanActivateFn {
       : inject(Router).createUrlTree([sesion.rutaInicio()]);
   };
 }
+
+/** La pantalla de activación solo se muestra si la cuenta aún no está activada. */
+export const activacionPendienteGuard: CanActivateFn = () => {
+  const sesion = inject(SesionService);
+  return sesion.perfil()?.debeCambiarClave
+    ? true
+    : inject(Router).createUrlTree([sesion.rutaInicio()]);
+};

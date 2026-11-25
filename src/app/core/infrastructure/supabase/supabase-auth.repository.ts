@@ -66,6 +66,40 @@ export class SupabaseAuthRepository implements AuthPort {
   async cerrarSesion(): Promise<void> {
     await this.supabase.auth.signOut();
   }
+    async enviarCodigo(correo: string): Promise<void> {
+    const { error } = await this.supabase.auth.signInWithOtp({
+      email: correo,
+      options: { shouldCreateUser: false },
+    });
+    if (error) {
+      throw new Error(mensajeAuth(error));
+    }
+  }
+
+  async verificarCodigo(correo: string, codigo: string): Promise<void> {
+    const { error } = await this.supabase.auth.verifyOtp({
+      email: correo,
+      token: codigo,
+      type: 'email',
+    });
+    if (error) {
+      throw new Error('El código no es válido o ya caducó. Pide uno nuevo.');
+    }
+  }
+
+  async cambiarClave(clave: string): Promise<void> {
+    const { error } = await this.supabase.auth.updateUser({ password: clave });
+    if (error) {
+      throw new Error(mensajeAuth(error));
+    }
+  }
+
+  async activarCuenta(): Promise<void> {
+    const { error } = await this.supabase.rpc('activar_cuenta');
+    if (error) {
+      throw new Error('No se pudo activar la cuenta. Inténtalo de nuevo.');
+    }
+  }
 }
 
 function aPerfil(fila: FilaPerfil): Perfil {
@@ -98,4 +132,19 @@ async function mensajeDeError(error: unknown): Promise<string> {
     return 'Sin conexión. Revisa tu internet e inténtalo de nuevo.';
   }
   return 'No se pudo iniciar sesión. Inténtalo de nuevo.';
+}
+
+/** Mensajes claros para los errores de Supabase Auth (ADR-008). */
+function mensajeAuth(error: { status?: number; message?: string }): string {
+  const texto = (error.message ?? '').toLowerCase();
+  if (error.status === 429 || texto.includes('rate') || texto.includes('seconds')) {
+    return 'Espera un momento antes de pedir otro código.';
+  }
+  if (texto.includes('different') || texto.includes('same')) {
+    return 'La nueva contraseña debe ser distinta de la actual.';
+  }
+  if (texto.includes('weak') || texto.includes('password')) {
+    return 'La contraseña no es segura. Prueba con otra.';
+  }
+  return 'No se pudo completar la operación. Inténtalo de nuevo.';
 }

@@ -5,7 +5,11 @@ import { Perfil } from '../models/perfil.model';
  * La infraestructura lo implementa con Supabase.
  */
 export abstract class AuthPort {
-  abstract iniciarSesion(cedula: string, clave: string): Promise<Perfil>;
-  abstract perfilActual(): Promise<Perfil | null>;
-  abstract cerrarSesion(): Promise<void>;
+    abstract iniciarSesion(cedula: string, clave: string): Promise<Perfil>;
+    abstract perfilActual(): Promise<Perfil | null>;
+    abstract cerrarSesion(): Promise<void>;
+    abstract enviarCodigo(correo: string): Promise<void>;
+    abstract verificarCodigo(correo: string, codigo: string): Promise<void>;
+    abstract cambiarClave(clave: string): Promise<void>;
+    abstract activarCuenta(): Promise<void>;
 }

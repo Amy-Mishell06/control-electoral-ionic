@@ -1,0 +1,90 @@
+<ion-header>
+  <ion-toolbar class="huellas">
+    <ion-title>Activar cuenta</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="salir()">Salir</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="contenedor">
+    <div class="pasos" aria-hidden="true">
+      <span [class.activo]="true"></span>
+      <span [class.activo]="paso() !== 'enviar'"></span>
+      <span [class.activo]="paso() === 'clave'"></span>
+    </div>
+
+    @switch (paso()) {
+      @case ('enviar') {
+        <h2>Hola, {{ nombre() }}</h2>
+        <p>Es tu primer acceso. Para proteger tu cuenta, te enviaremos un código de 6 dígitos a tu correo:</p>
+        <p class="correo">{{ correo() }}</p>
+        <ion-button expand="block" (click)="enviarCodigo()" [disabled]="cargando()">
+          @if (cargando()) { <ion-spinner name="crescent"></ion-spinner> } @else { Enviar código }
+        </ion-button>
+      }
+
+      @case ('codigo') {
+        <h2>Revisa tu correo</h2>
+        <p>Escribe el código que enviamos a <strong>{{ correo() }}</strong>.</p>
+        <form [formGroup]="formCodigo" (ngSubmit)="verificarCodigo()" novalidate>
+          <ion-input
+            formControlName="codigo"
+            label="Código de 6 dígitos"
+            labelPlacement="stacked"
+            fill="outline"
+            inputmode="numeric"
+            maxlength="6"
+            autocomplete="one-time-code"
+            errorText="El código tiene 6 números.">
+          </ion-input>
+          <ion-button type="submit" expand="block" [disabled]="cargando()">
+            @if (cargando()) { <ion-spinner name="crescent"></ion-spinner> } @else { Verificar código }
+          </ion-button>
+        </form>
+        <ion-button fill="clear" expand="block" (click)="enviarCodigo()" [disabled]="segundos() > 0 || cargando()">
+          @if (segundos() > 0) { Reenviar código en {{ segundos() }} s } @else { Reenviar código }
+        </ion-button>
+      }
+
+      @case ('clave') {
+        <h2>Crea tu nueva contraseña</h2>
+        <p>Ya no podrás usar la contraseña inicial.</p>
+        <form [formGroup]="formClave" (ngSubmit)="guardarClave()" novalidate>
+          <ion-input
+            formControlName="clave"
+            type="password"
+            label="Nueva contraseña"
+            labelPlacement="stacked"
+            fill="outline"
+            autocomplete="new-password"
+            helperText="Mínimo 8 caracteres, con letras y números."
+            [errorText]="mensajeClave()">
+            <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+          </ion-input>
+          <ion-input
+            formControlName="confirmar"
+            type="password"
+            label="Repite la contraseña"
+            labelPlacement="stacked"
+            fill="outline"
+            autocomplete="new-password"
+            errorText="Repite tu contraseña.">
+            <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+          </ion-input>
+          @if (formClave.hasError('distintas') && formClave.controls.confirmar.touched) {
+            <p class="error-campo" role="alert">Las contraseñas no coinciden.</p>
+          }
+          <ion-button type="submit" expand="block" [disabled]="cargando()">
+            @if (cargando()) { <ion-spinner name="crescent"></ion-spinner> } @else { Guardar y entrar }
+          </ion-button>
+        </form>
+      }
+    }
+
+    @if (error()) {
+      <p class="error-general" role="alert">{{ error() }}</p>
+    }
+  </div>
+</ion-content>
