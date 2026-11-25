@@ -3,10 +3,6 @@ import {
   authGuard, cambioClaveGuard, invitadoGuard, rolGuard, activacionPendienteGuard,
 } from './presentation/shared/guards/sesion.guards';
 
-const enConstruccion = () =>
-  import('./presentation/shared/en-construccion/en-construccion.page')
-    .then((m) => m.EnConstruccionPage);
-
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
   {
@@ -14,6 +10,12 @@ export const routes: Routes = [
     canActivate: [invitadoGuard],
     loadComponent: () =>
       import('./presentation/auth/login/login.page').then((m) => m.LoginPage),
+  },
+  {
+    path: 'recuperar',
+    canActivate: [invitadoGuard],
+    loadComponent: () =>
+      import('./presentation/auth/recuperar/recuperar.page').then((m) => m.RecuperarPage),
   },
   {
     path: 'activar-cuenta',
@@ -65,15 +67,15 @@ export const routes: Routes = [
           import('./presentation/recinto/veedores/veedores.page').then((m) => m.VeedoresPage),
       },
       {
+        path: 'veedores/nuevo',
+        loadComponent: () =>
+          import('./presentation/recinto/nuevo-veedor/nuevo-veedor.page').then((m) => m.NuevoVeedorPage),
+      },
+      {
         path: 'acta/:juntaId/:dignidad',
         loadComponent: () =>
           import('./presentation/shared/corregir-acta/corregir-acta.page').then((m) => m.CorregirActaPage),
         data: { puedeCambiarFoto: true, volver: '/recinto' },
-      },
-      {
-        path: 'veedores/nuevo',
-        loadComponent: () =>
-          import('./presentation/recinto/nuevo-veedor/nuevo-veedor.page').then((m) => m.NuevoVeedorPage),
       },
     ],
   },
@@ -99,5 +101,6 @@ export const routes: Routes = [
       },
     ],
   },
+  // Siempre al final: cualquier ruta desconocida vuelve al login
   { path: '**', redirectTo: 'login' },
 ];

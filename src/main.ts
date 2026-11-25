@@ -30,6 +30,8 @@ import { DashboardPort } from './app/core/domain/ports/dashboard.port';
 import { SupabaseDashboardRepository } from './app/core/infrastructure/supabase/supabase-dashboard.repository';
 import { CorreccionPort } from './app/core/domain/ports/correccion.port';
 import { SupabaseCorreccionRepository } from './app/core/infrastructure/supabase/supabase-correccion.repository';
+import { RecuperacionPort } from './app/core/domain/ports/recuperacion.port';
+import { SupabaseRecuperacionRepository } from './app/core/infrastructure/supabase/supabase-recuperacion.repository';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -44,6 +46,7 @@ bootstrapApplication(AppComponent, {
     { provide: NitidezPort, useClass: CanvasNitidezAdapter },
     { provide: DashboardPort, useClass: SupabaseDashboardRepository },
     { provide: CorreccionPort, useClass: SupabaseCorreccionRepository },
+    { provide: RecuperacionPort, useClass: SupabaseRecuperacionRepository },
     provideIonicAngular(),
     provideRouter(routes, withPreloading(PreloadAllModules), withComponentInputBinding()),
   ],
