@@ -17,6 +17,7 @@
 
     @switch (paso()) {
       @case ('enviar') {
+        <app-oso nombre="mariposa" [tamano]="130" />
         <h2>Hola, {{ nombre() }}</h2>
         <p>Es tu primer acceso. Para proteger tu cuenta, te enviaremos un código de 6 dígitos a tu correo:</p>
         <p class="correo">{{ correo() }}</p>
@@ -26,6 +27,7 @@
       }
 
       @case ('codigo') {
+        <app-oso nombre="registrando" [tamano]="130" />
         <h2>Revisa tu correo</h2>
         <p>Escribe el código que enviamos a <strong>{{ correo() }}</strong>.</p>
         <form [formGroup]="formCodigo" (ngSubmit)="verificarCodigo()" novalidate>
@@ -49,6 +51,7 @@
       }
 
       @case ('clave') {
+        <app-oso nombre="sello" [tamano]="120" animacion="saludar" />
         <h2>Crea tu nueva contraseña</h2>
         <p>Ya no podrás usar la contraseña inicial.</p>
         <form [formGroup]="formClave" (ngSubmit)="guardarClave()" novalidate>

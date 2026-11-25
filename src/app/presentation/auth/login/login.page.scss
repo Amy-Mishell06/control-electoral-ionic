@@ -1,89 +1,166 @@
+/* ===== Login de Yupana ===== */
+
 .pantalla {
-    min-height: 100%;
-    display: flex;
-    flex-direction: column;
-    font-family: var(--app-font-titulos);
-    max-width: 480px;
-    margin: 0 auto;
+  max-width: 480px;
+  min-height: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
 }
 
+/* Encabezado azul petróleo con huellas: título, frase y el oso colgando */
 .encabezado {
-    min-height: 300px;
-    border-radius: 0 0 40px 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 32px 24px 56px;
-    color: #ffffff;
-    text-align: center;
+  background-color: #155e75;
+  color: #ffffff;
+  text-align: center;
+  padding: 44px 24px 250px;
+  border-radius: 0 0 32px 32px;
 
-    h1 {
-        margin: 0;
-        font-size: 36px;
-        font-weight: 800;
-    }
+  h1 {
+    margin: 0;
+    font-family: var(--app-font-titulos);
+    font-size: 2.6rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+  }
 
-    p {
-        margin: 0;
-        color: #f5e9dc;
-    }
+  p {
+    margin: 6px 0 0;
+    font-size: 1.05rem;
+    opacity: 0.9;
+  }
 }
 
-.mascota {
-    width: 104px;
-    height: 104px;
-    border-radius: 32px;
-    background: #f5e9dc;
-    color: #7c4a2d;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
+/* Tarjeta del formulario: sube sobre el encabezado */
 .tarjeta {
-    margin: -36px 20px 24px;
-    padding: 24px;
-    border-radius: 24px;
-    background: var(--app-superficie);
-    box-shadow: var(--app-sombra-tarjeta);
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+  position: relative;
+  margin: -70px 16px 24px;
+  padding: 28px 22px 22px;
+  border-radius: 24px;
+  background: var(--app-superficie, #ffffff);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+  overflow: visible;
 
-    h2 {
-        margin: 0;
-        font-size: 22px;
-        font-weight: 700;
-    }
+  h2 {
+    margin: 4px 0 18px;
+    font-family: var(--app-font-titulos);
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
 
-    ion-input {
-        --border-radius: var(--app-radio);
-    }
+  ion-input {
+    margin-bottom: 16px;
+  }
 
-    ion-button {
-        --border-radius: var(--app-radio);
-        min-height: var(--app-boton-alto);
-        margin: 0;
-        font-weight: 700;
-        text-transform: none;
-        font-size: 17px;
-    }
+  ion-button[type='submit'] {
+    margin-top: 6px;
+    --border-radius: 16px;
+    min-height: 52px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
 }
 
 .error-general {
-    margin: 0;
-    padding: 12px 14px;
-    border-radius: 12px;
-    background: rgba(var(--ion-color-danger-rgb), 0.12);
-    color: var(--ion-color-danger);
-    font-weight: 600;
+  margin: 0 0 12px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: rgba(235, 68, 90, 0.12);
+  color: var(--ion-color-danger);
+  font-weight: 600;
 }
 
 .enlace {
-    align-self: center;
-    color: var(--ion-color-primary);
-    font-weight: 600;
-    text-decoration: none;
+  display: block;
+  margin-top: 16px;
+  text-align: center;
+  font-weight: 600;
+  color: var(--ion-color-primary);
+  text-decoration: none;
+}
+
+/* ===== Mascota colgada del borde del formulario (ADR-013) ===== */
+
+.oso {
+  position: absolute;
+  width: 200px;
+  aspect-ratio: 640 / 638;
+  left: 50%;
+  top: 0;
+  /* Queda sobre el azul petróleo; solo sus patas se apoyan en la tarjeta */
+  translate: -50% calc(-100% + 36px);
+  transform-origin: 50% 100%;
+  /* Balanceo muy suave, como si se sostuviera del borde */
+  animation: columpio 5s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 2;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.25));
+}
+
+/* Las dos versiones del mismo oso, una encima de otra */
+.oso-capa {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Ojos cerrados: invisibles salvo al parpadear */
+.oso-cerrado {
+  opacity: 0;
+  animation: parpadeo 5s infinite;
+  transition: opacity 0.18s ease;
+}
+
+/* Al escribir la contraseña oculta: cierra los ojos y se queda así */
+.oso.ojos-cerrados .oso-cerrado {
+  opacity: 1;
+  animation: none;
+}
+
+/* La mariposa posada en su pata aletea de vez en cuando */
+.mariposa {
+  position: absolute;
+  left: 0;
+  top: 40.13%;
+  width: 15.16%;
+  height: auto;
+  transform-origin: 72.2% 77.3%;
+  animation: aleteo-pausado 4s ease-in-out infinite;
+}
+
+@keyframes parpadeo {
+  0%, 92%, 100% { opacity: 0; }
+  94%, 96% { opacity: 1; }
+}
+
+@keyframes columpio {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50% { transform: translateY(-2px) rotate(1deg); }
+}
+
+@keyframes aleteo-pausado {
+  0%, 70%, 100% { scale: 1 1; }
+  74% { scale: 0.35 1; }
+  78% { scale: 1 1; }
+  82% { scale: 0.35 1; }
+  86% { scale: 1 1; }
+}
+
+/* Niega con la cabeza si la clave es incorrecta */
+.oso.sacudir {
+  animation: negar 0.6s ease-in-out;
+}
+
+@keyframes negar {
+  0%, 100% { transform: rotate(0); }
+  20% { transform: rotate(-5deg); }
+  40% { transform: rotate(4deg); }
+  60% { transform: rotate(-3deg); }
+  80% { transform: rotate(2deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .oso, .oso.sacudir, .oso-cerrado, .mariposa { animation: none; }
 }

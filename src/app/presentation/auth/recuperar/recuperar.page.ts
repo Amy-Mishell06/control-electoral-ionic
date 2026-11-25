@@ -2,13 +2,12 @@ import { Component, OnDestroy, inject, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
-  IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonInput, IonInputPasswordToggle,
+  IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonInput, IonInputPasswordToggle,
   IonSpinner, IonTitle, IonToolbar,
 } from '@ionic/angular';
-import { addIcons } from 'ionicons';
-import { keyOutline, mailOutline } from 'ionicons/icons';
 import { RecuperarClaveUseCase } from '../../../core/application/recuperar-clave.use-case';
 import { AvisosService } from '../../shared/avisos.service';
+import { OsoComponent } from '../../shared/oso/oso.component';
 import { enmascararCorreo } from '../../shared/utils/enmascarar-correo';
 
 type Paso = 'correo' | 'codigo' | 'clave';
@@ -17,8 +16,8 @@ const ESPERA_REENVIO = 60;
 @Component({
   selector: 'app-recuperar',
   imports: [
-    ReactiveFormsModule,
-    IonHeader, IonToolbar, IonTitle, IonButtons, IonBackButton, IonContent, IonButton, IonIcon, IonInput,
+    ReactiveFormsModule, OsoComponent,
+    IonHeader, IonToolbar, IonTitle, IonButtons, IonBackButton, IonContent, IonButton, IonInput,
     IonInputPasswordToggle, IonSpinner,
   ],
   template: `
@@ -33,7 +32,7 @@ const ESPERA_REENVIO = 60;
       <div class="contenedor angosto">
         @switch (paso()) {
           @case ('correo') {
-            <ion-icon name="mail-outline" class="icono-paso" aria-hidden="true"></ion-icon>
+            <app-oso nombre="mariposa" [tamano]="120" class="oso-paso" />
             <p>Escribe el correo con el que te registraron. Te enviaremos un código de 6 dígitos.</p>
             <ion-input type="email" inputmode="email" fill="outline" labelPlacement="stacked"
               label="Correo" [formControl]="correo" autocomplete="email"></ion-input>
@@ -43,7 +42,7 @@ const ESPERA_REENVIO = 60;
           }
 
           @case ('codigo') {
-            <ion-icon name="mail-outline" class="icono-paso" aria-hidden="true"></ion-icon>
+            <app-oso nombre="registrando" [tamano]="130" class="oso-paso" />
             <p>Si <strong>{{ correoOculto() }}</strong> está registrado, te llegó un código.
               Revisa también la carpeta de spam.</p>
             <ion-input type="text" inputmode="numeric" maxlength="6" fill="outline" labelPlacement="stacked"
@@ -57,7 +56,7 @@ const ESPERA_REENVIO = 60;
           }
 
           @case ('clave') {
-            <ion-icon name="key-outline" class="icono-paso" aria-hidden="true"></ion-icon>
+            <app-oso nombre="sello" [tamano]="120" animacion="saludar" class="oso-paso" />
             <p>Escribe tu nueva contraseña.</p>
             <ion-input type="password" fill="outline" labelPlacement="stacked" label="Nueva contraseña"
               [formControl]="clave" autocomplete="new-password">
@@ -81,7 +80,8 @@ const ESPERA_REENVIO = 60;
   `,
   styles: [`
     .angosto { max-width: 480px; margin: 0 auto; }
-    .icono-paso { font-size: 56px; color: var(--ion-color-primary); display: block; margin: 16px auto 0; }
+    .oso-paso { margin: 12px auto 4px; }
+    p { text-align: center; }
     ion-input { margin-bottom: 14px; }
   `],
 })
@@ -101,10 +101,6 @@ export class RecuperarPage implements OnDestroy {
   readonly codigo = new FormControl('', { nonNullable: true });
   readonly clave = new FormControl('', { nonNullable: true });
   readonly confirmacion = new FormControl('', { nonNullable: true });
-
-  constructor() {
-    addIcons({ keyOutline, mailOutline });
-  }
 
   async enviar(): Promise<void> {
     await this.ejecutar(async () => {

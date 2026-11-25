@@ -8,12 +8,13 @@ import { camera, create, logOut } from 'ionicons/icons';
 import { MesasService } from '../../../core/application/mesas.service';
 import { SesionService } from '../../../core/application/sesion.service';
 import { Dignidad, EstadoActa } from '../../../core/domain/models/acta.model';
+import { OsoComponent } from '../../shared/oso/oso.component';
 import { COLOR_ESTADO, TEXTO_ESTADO } from '../../shared/utils/estado-acta';
 
 @Component({
   selector: 'app-mis-mesas',
   imports: [
-    RouterLink, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonContent, IonIcon, IonSpinner, IonBadge,
+    RouterLink, OsoComponent, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonContent, IonIcon, IonSpinner, IonBadge,
   ],
   template: `
     <ion-header>
@@ -28,7 +29,13 @@ import { COLOR_ESTADO, TEXTO_ESTADO } from '../../shared/utils/estado-acta';
     </ion-header>
     <ion-content class="ion-padding">
       <div class="contenedor">
-        <p class="texto-secundario">Hola, {{ nombre() }}</p>
+        <section class="saludo">
+          <app-oso nombre="votando" [tamano]="88" animacion="saludar" />
+          <div>
+            <h2>Hola, {{ nombre() }}</h2>
+            <p class="texto-secundario">Registra las actas de tus mesas cuando termine el conteo.</p>
+          </div>
+        </section>
 
         @if (servicio.cargando() && servicio.mesas().length === 0) {
           <div class="centrado"><ion-spinner name="crescent"></ion-spinner></div>
@@ -36,7 +43,10 @@ import { COLOR_ESTADO, TEXTO_ESTADO } from '../../shared/utils/estado-acta';
           <p class="mensaje-error" role="alert">{{ servicio.error() }}</p>
           <ion-button fill="outline" (click)="servicio.cargar()">Reintentar</ion-button>
         } @else if (servicio.mesas().length === 0) {
-          <p class="estado-vacio">Todavía no tienes mesas asignadas. Consulta con tu coordinador de recinto.</p>
+          <div class="estado-vacio">
+            <app-oso nombre="mariposa" [tamano]="130" />
+            <p>Todavía no tienes mesas asignadas. Consulta con tu coordinador de recinto.</p>
+          </div>
         } @else {
           @for (mesa of servicio.mesas(); track mesa.juntaId) {
             <article class="tarjeta">
@@ -70,6 +80,10 @@ import { COLOR_ESTADO, TEXTO_ESTADO } from '../../shared/utils/estado-acta';
   styles: [`
     .fila-acta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
     .fila-acta span { font-weight: 600; min-width: 90px; }
+    .saludo { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+    .saludo h2 { margin: 0 0 4px; font-family: var(--app-font-titulos); font-size: 1.3rem; }
+    .saludo p { margin: 0; }
+    .saludo app-oso { flex-shrink: 0; }
   `],
 })
 export class MisMesasPage {

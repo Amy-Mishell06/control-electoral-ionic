@@ -14,7 +14,20 @@
 
 <ion-content class="ion-padding">
   <div class="contenedor">
-    <p class="texto-secundario">Hola, {{ nombre() }} · Pichincha, Quito</p>
+    <section class="tarjeta bienvenida">
+      <app-oso nombre="contando" [tamano]="96" animacion="contar" />
+      <div>
+        <h2>Hola, {{ nombre() }}</h2>
+        <p class="texto-secundario">
+          Pichincha, Quito · {{ servicio.recintos().length }} recintos
+          @if (sinCoordinador() > 0) { · {{ sinCoordinador() }} sin coordinador }
+        </p>
+        <ion-button size="small" fill="outline" routerLink="/provincial/dashboard">
+          <ion-icon slot="start" name="stats-chart"></ion-icon>
+          Ver resultados
+        </ion-button>
+      </div>
+    </section>
 
     <ion-button expand="block" routerLink="/provincial/recintos/nuevo">
       <ion-icon slot="start" name="add-circle"></ion-icon>
@@ -27,7 +40,10 @@
     <p class="mensaje-error" role="alert">{{ servicio.error() }}</p>
     <ion-button fill="outline" (click)="servicio.cargar()">Reintentar</ion-button>
     } @else if (servicio.recintos().length === 0) {
-    <p class="estado-vacio">Todavía no hay recintos. Crea el primero.</p>
+    <div class="estado-vacio">
+      <app-oso nombre="mariposa" [tamano]="140" />
+      <p>Todavía no hay recintos. Crea el primero.</p>
+    </div>
     } @else {
     @for (recinto of servicio.recintos(); track recinto.id) {
     <article class="tarjeta">

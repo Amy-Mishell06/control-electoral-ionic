@@ -12,14 +12,17 @@
     @if (cargando()) {
       <div class="centrado"><ion-spinner name="crescent"></ion-spinner></div>
     } @else if (acta(); as a) {
-      <section class="tarjeta">
-        <div class="fila-titulo">
-          <strong>Mesa {{ a.mesa }} · {{ textoDignidad }}</strong>
-          <span class="estado-acta" [class.corregida]="a.estado === 'corregida'">
-            {{ a.estado === 'corregida' ? 'Corregida' : 'Registrada' }} · v{{ a.version }}
-          </span>
+      <section class="tarjeta cabecera">
+        <app-oso nombre="registrando" [tamano]="80" />
+        <div class="cabecera-texto">
+          <div class="fila-titulo">
+            <strong>Mesa {{ a.mesa }} · {{ textoDignidad }}</strong>
+            <span class="estado-acta" [class.corregida]="a.estado === 'corregida'">
+              {{ a.estado === 'corregida' ? 'Corregida' : 'Registrada' }} · v{{ a.version }}
+            </span>
+          </div>
+          <p class="texto-secundario">Cambia solo los valores que estén mal. La versión anterior queda en el historial.</p>
         </div>
-        <p class="texto-secundario">Cambia solo los valores que estén mal. La versión anterior queda en el historial.</p>
       </section>
 
       <form class="formulario" [formGroup]="form" (ngSubmit)="guardar()">
@@ -46,14 +49,18 @@
           errorText="Escribe un número entero, sin negativos."></ion-input>
 
         @if (suma(); as s) {
-          <p class="cuadre" [class.mal]="!s.cuadra">
-            <ion-icon [name]="s.cuadra ? 'checkmark-circle' : 'warning'"></ion-icon>
-            @if (s.cuadra) {
-              La suma cuadra: {{ s.suma }}
-            } @else {
-              Suma {{ s.suma }} · diferencia {{ s.diferencia }}
-            }
-          </p>
+          <div class="cuadre-oso">
+            <app-oso [nombre]="s.cuadra ? 'sello' : 'sello-serio'" [tamano]="72"
+              [animacion]="s.cuadra ? 'saludar' : 'ninguna'" />
+            <p class="cuadre" [class.mal]="!s.cuadra">
+              <ion-icon [name]="s.cuadra ? 'checkmark-circle' : 'warning'"></ion-icon>
+              @if (s.cuadra) {
+                La suma cuadra: {{ s.suma }}
+              } @else {
+                Suma {{ s.suma }} · diferencia {{ s.diferencia }}
+              }
+            </p>
+          </div>
         }
 
         <h3>Foto del acta</h3>

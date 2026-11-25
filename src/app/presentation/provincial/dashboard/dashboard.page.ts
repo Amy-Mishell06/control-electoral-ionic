@@ -9,6 +9,7 @@ import { image, location, refresh, statsChart, warning } from 'ionicons/icons';
 import { DashboardService } from '../../../core/application/dashboard.service';
 import { Dignidad } from '../../../core/domain/models/acta.model';
 import { ActaUbicada } from '../../../core/domain/models/resultados.model';
+import { OsoComponent } from '../../shared/oso/oso.component';
 import {
   DISTANCIA_MAXIMA_M, distanciaMetros, porcentajeAvance,
 } from '../../../core/domain/rules/resultados.rule';
@@ -20,7 +21,7 @@ type Seccion = 'resultados' | 'avance' | 'ubicaciones';
   templateUrl: './dashboard.page.html',
   styleUrls: ['./dashboard.page.scss'],
   imports: [
-    DatePipe, DecimalPipe,
+    DatePipe, DecimalPipe, OsoComponent,
     IonHeader, IonToolbar, IonTitle, IonButtons, IonBackButton, IonButton, IonContent, IonIcon,
     IonLabel, IonProgressBar, IonRefresher, IonRefresherContent, IonSegment, IonSegmentButton, IonSpinner,
   ],

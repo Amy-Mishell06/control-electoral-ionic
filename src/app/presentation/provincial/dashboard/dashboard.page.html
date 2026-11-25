@@ -20,18 +20,21 @@
   <div class="contenedor">
     <!-- Avance general -->
     <section class="tarjeta resumen">
-      <p class="texto-secundario">Actas recibidas en la provincia</p>
-      <p class="cifra">
-        {{ servicio.avanceGeneral().recibidas }}
-        <span>de {{ servicio.avanceGeneral().esperadas }}</span>
-      </p>
-      <ion-progress-bar [value]="servicio.avanceGeneral().porcentaje / 100"></ion-progress-bar>
-      <p class="texto-secundario">
-        {{ servicio.avanceGeneral().porcentaje }}% de avance
-        @if (servicio.actualizado(); as hora) {
+      <div class="resumen-texto">
+        <p class="texto-secundario">Actas recibidas en la provincia</p>
+        <p class="cifra">
+          {{ servicio.avanceGeneral().recibidas }}
+          <span>de {{ servicio.avanceGeneral().esperadas }}</span>
+        </p>
+        <ion-progress-bar [value]="servicio.avanceGeneral().porcentaje / 100"></ion-progress-bar>
+        <p class="texto-secundario">
+          {{ servicio.avanceGeneral().porcentaje }}% de avance
+          @if (servicio.actualizado(); as hora) {
           · actualizado a las {{ hora | date: 'HH:mm' }}
-        }
-      </p>
+          }
+        </p>
+      </div>
+      <app-oso nombre="contando" [tamano]="96" />
     </section>
 
     <ion-segment [value]="seccion()" (ionChange)="cambiarSeccion($event.detail.value)">
@@ -41,116 +44,126 @@
     </ion-segment>
 
     @if (error()) {
-      <p class="mensaje-error">{{ error() }}</p>
+    <p class="mensaje-error">{{ error() }}</p>
     }
 
     @if (cargando() && servicio.actualizado() === null) {
-      <div class="centrado"><ion-spinner></ion-spinner></div>
+    <div class="centrado"><ion-spinner></ion-spinner></div>
     } @else {
-      @switch (seccion()) {
-        @case ('resultados') {
-          <!-- Resultados por dignidad -->
-          @if (servicio.dignidades().length > 1) {
-            <ion-segment [value]="dignidad()" (ionChange)="cambiarDignidad($event.detail.value)">
-              @for (d of servicio.dignidades(); track d) {
-                <ion-segment-button [value]="d"><ion-label>{{ textoDignidad(d) }}</ion-label></ion-segment-button>
-              }
-            </ion-segment>
-          }
-
-          @if (filas().length === 0) {
-            <p class="estado-vacio">Todavía no hay votos registrados.</p>
-          } @else {
-            <section class="tarjeta">
-              @for (f of filas(); track f.organizacionId; let primero = $first) {
-                <div class="organizacion" [class.lider]="primero && f.votos > 0">
-                  <div class="fila-titulo">
-                    <strong>{{ f.siglas }}</strong>
-                    <span>{{ f.votos | number }} · {{ f.porcentaje | number: '1.0-2' }}%</span>
-                  </div>
-                  <p class="texto-secundario">{{ f.candidato }} — {{ f.organizacion }}</p>
-                  <div class="barra"><div class="relleno" [style.width.%]="(f.votos / maximo()) * 100"></div></div>
-                </div>
-              }
-            </section>
-
-            <section class="tarjeta totales">
-              <div><span class="texto-secundario">Válidos</span><strong>{{ votosValidos() | number }}</strong></div>
-              <div><span class="texto-secundario">Nulos</span><strong>{{ totales()?.nulos ?? 0 | number }}</strong></div>
-              <div><span class="texto-secundario">Blancos</span><strong>{{ totales()?.blancos ?? 0 | number }}</strong></div>
-              <div><span class="texto-secundario">Sufragantes</span><strong>{{ totales()?.sufragantes ?? 0 | number }}</strong></div>
-              <div><span class="texto-secundario">Actas</span><strong>{{ totales()?.actas ?? 0 }}</strong></div>
-            </section>
-          }
-        }
-
-        @case ('avance') {
-          <!-- Avance por recinto -->
-          @for (r of servicio.avance(); track r.recintoId) {
-            <section class="tarjeta">
-              <div class="fila-titulo">
-                <strong>{{ r.nombre }}</strong>
-                <span>{{ porcentaje(r.recibidas, r.esperadas) }}%</span>
-              </div>
-              <p class="texto-secundario">{{ r.parroquia }} · {{ r.recibidas }} de {{ r.esperadas }} actas</p>
-              <ion-progress-bar
-                [value]="porcentaje(r.recibidas, r.esperadas) / 100"
-                [color]="porcentaje(r.recibidas, r.esperadas) === 100 ? 'success' : 'primary'"
-              ></ion-progress-bar>
-            </section>
-          } @empty {
-            <p class="estado-vacio">No hay recintos registrados.</p>
-          }
-        }
-
-        @case ('ubicaciones') {
-          <!-- Actas con GPS -->
-          @for (a of servicio.actas(); track a.actaId) {
-            <section class="tarjeta">
-              <div class="fila-titulo">
-                <strong>Mesa {{ a.mesa }} · {{ textoDignidad(a.dignidad) }}</strong>
-                <span class="estado-acta" [class.corregida]="a.estado === 'corregida'">
-                  {{ a.estado === 'corregida' ? 'Corregida' : 'Registrada' }}
-                </span>
-              </div>
-              <p class="texto-secundario">
-                {{ a.recinto }}
-                @if (a.capturadaAt) { · {{ a.capturadaAt | date: 'dd/MM HH:mm' }} }
-              </p>
-              <p class="texto-secundario">
-                {{ a.ubicacion.latitud | number: '1.5-5' }}, {{ a.ubicacion.longitud | number: '1.5-5' }}
-                @if (a.precisionM !== null) { (±{{ a.precisionM | number: '1.0-0' }} m) }
-              </p>
-
-              @if (distancia(a); as metros) {
-                @if (metros > distanciaMaxima) {
-                  <p class="alerta">
-                    <ion-icon name="warning"></ion-icon>
-                    Tomada a {{ metros | number }} m del recinto
-                  </p>
-                } @else {
-                  <p class="texto-secundario">A {{ metros | number }} m del recinto</p>
-                }
-              }
-
-              <div class="acciones">
-                <ion-button fill="outline" size="small" [href]="enlaceMapa(a)" target="_blank">
-                  <ion-icon slot="start" name="location"></ion-icon>
-                  Ver en mapa
-                </ion-button>
-                @if (a.fotoRuta) {
-                  <ion-button fill="outline" size="small" (click)="verFoto(a.fotoRuta)">
-                    <ion-icon slot="start" name="image"></ion-icon>
-                    Ver foto
-                  </ion-button>
-                }
-              </div>
-            </section>
-          } @empty {
-            <p class="estado-vacio">Aún no hay actas con ubicación.</p>
-          }
-        }
+    @switch (seccion()) {
+    @case ('resultados') {
+    <!-- Resultados por dignidad -->
+    @if (servicio.dignidades().length > 1) {
+    <ion-segment [value]="dignidad()" (ionChange)="cambiarDignidad($event.detail.value)">
+      @for (d of servicio.dignidades(); track d) {
+      <ion-segment-button [value]="d"><ion-label>{{ textoDignidad(d) }}</ion-label></ion-segment-button>
       }
+    </ion-segment>
+    }
+
+    @if (filas().length === 0) {
+    <div class="estado-vacio">
+      <app-oso nombre="votando" [tamano]="140" />
+      <p>Todavía no hay votos registrados.</p>
+    </div>
+    } @else {
+    <section class="tarjeta">
+      @for (f of filas(); track f.organizacionId; let primero = $first) {
+      <div class="organizacion" [class.lider]="primero && f.votos > 0">
+        <div class="fila-titulo">
+          <strong>{{ f.siglas }}</strong>
+          <span>{{ f.votos | number }} · {{ f.porcentaje | number: '1.0-2' }}%</span>
+        </div>
+        <p class="texto-secundario">{{ f.candidato }} — {{ f.organizacion }}</p>
+        <div class="barra">
+          <div class="relleno" [style.width.%]="(f.votos / maximo()) * 100"></div>
+        </div>
+      </div>
+      }
+    </section>
+
+    <section class="tarjeta totales">
+      <div><span class="texto-secundario">Válidos</span><strong>{{ votosValidos() | number }}</strong></div>
+      <div><span class="texto-secundario">Nulos</span><strong>{{ totales()?.nulos ?? 0 | number }}</strong></div>
+      <div><span class="texto-secundario">Blancos</span><strong>{{ totales()?.blancos ?? 0 | number }}</strong></div>
+      <div><span class="texto-secundario">Sufragantes</span><strong>{{ totales()?.sufragantes ?? 0 | number }}</strong>
+      </div>
+      <div><span class="texto-secundario">Actas</span><strong>{{ totales()?.actas ?? 0 }}</strong></div>
+    </section>
+    }
+    }
+
+    @case ('avance') {
+    <!-- Avance por recinto -->
+    @for (r of servicio.avance(); track r.recintoId) {
+    <section class="tarjeta">
+      <div class="fila-titulo">
+        <strong>{{ r.nombre }}</strong>
+        <span>{{ porcentaje(r.recibidas, r.esperadas) }}%</span>
+      </div>
+      <p class="texto-secundario">{{ r.parroquia }} · {{ r.recibidas }} de {{ r.esperadas }} actas</p>
+      <ion-progress-bar [value]="porcentaje(r.recibidas, r.esperadas) / 100"
+        [color]="porcentaje(r.recibidas, r.esperadas) === 100 ? 'success' : 'primary'"></ion-progress-bar>
+    </section>
+    } @empty {
+    <div class="estado-vacio">
+      <app-oso nombre="equipo" [tamano]="160" />
+      <p>No hay recintos registrados.</p>
+    </div>
+    }
+    }
+
+    @case ('ubicaciones') {
+    <!-- Actas con GPS -->
+    @for (a of servicio.actas(); track a.actaId) {
+    <section class="tarjeta">
+      <div class="fila-titulo">
+        <strong>Mesa {{ a.mesa }} · {{ textoDignidad(a.dignidad) }}</strong>
+        <span class="estado-acta" [class.corregida]="a.estado === 'corregida'">
+          {{ a.estado === 'corregida' ? 'Corregida' : 'Registrada' }}
+        </span>
+      </div>
+      <p class="texto-secundario">
+        {{ a.recinto }}
+        @if (a.capturadaAt) { · {{ a.capturadaAt | date: 'dd/MM HH:mm' }} }
+      </p>
+      <p class="texto-secundario">
+        {{ a.ubicacion.latitud | number: '1.5-5' }}, {{ a.ubicacion.longitud | number: '1.5-5' }}
+        @if (a.precisionM !== null) { (±{{ a.precisionM | number: '1.0-0' }} m) }
+      </p>
+
+      @if (distancia(a); as metros) {
+      @if (metros > distanciaMaxima) {
+      <p class="alerta">
+        <ion-icon name="warning"></ion-icon>
+        Tomada a {{ metros | number }} m del recinto
+      </p>
+      } @else {
+      <p class="texto-secundario">A {{ metros | number }} m del recinto</p>
+      }
+      }
+
+      <div class="acciones">
+        <ion-button fill="outline" size="small" [href]="enlaceMapa(a)" target="_blank">
+          <ion-icon slot="start" name="location"></ion-icon>
+          Ver en mapa
+        </ion-button>
+        @if (a.fotoRuta) {
+        <ion-button fill="outline" size="small" (click)="verFoto(a.fotoRuta)">
+          <ion-icon slot="start" name="image"></ion-icon>
+          Ver foto
+        </ion-button>
+        }
+      </div>
+    </section>
+    } @empty {
+    <div class="estado-vacio">
+      <app-oso nombre="mariposa" [tamano]="120" />
+      <p>Aún no hay actas con ubicación.</p>
+    </div>
+    }
+    }
+    }
     }
   </div>
 </ion-content>

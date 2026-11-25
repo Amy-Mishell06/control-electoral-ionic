@@ -47,3 +47,26 @@ ion-input {
   border-radius: var(--app-radio, 16px);
   background: rgba(127, 127, 127, 0.1);
 }
+
+.cabecera {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  app-oso { flex-shrink: 0; }
+}
+
+.cabecera-texto {
+  flex: 1;
+  min-width: 0;
+}
+
+.cuadre-oso {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0;
+
+  app-oso { flex-shrink: 0; }
+  .cuadre { margin: 0; }
+}

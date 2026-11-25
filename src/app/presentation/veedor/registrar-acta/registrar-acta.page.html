@@ -15,7 +15,10 @@
 
     @switch (paso()) {
       @case ('votos') {
-        <h2>Paso 1 de 4 · Votos</h2>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <app-oso nombre="registrando" [tamano]="76" />
+          <h2>Paso 1 de 4 · Votos</h2>
+        </div>
         <form class="formulario" [formGroup]="form" (ngSubmit)="continuarVotos()" novalidate>
           @for (o of organizaciones(); track o.organizacionId) {
             <ion-input [formControlName]="o.organizacionId" type="number" inputmode="numeric"
@@ -34,23 +37,30 @@
             labelPlacement="stacked" fill="outline" errorText="Escribe un número entero, sin negativos."></ion-input>
 
           @if (suma(); as s) {
-            <p class="aviso" [class.ok]="s.cuadra" role="status">
-              <ion-icon [name]="s.cuadra ? 'checkmark-circle' : 'warning'" aria-hidden="true"></ion-icon>
-              @if (s.cuadra) {
-                Los votos suman {{ s.suma }}: cuadra con el total.
-              } @else if (s.diferencia > 0) {
-                Suma {{ s.suma }} · faltan {{ s.diferencia }}
-              } @else {
-                Suma {{ s.suma }} · sobran {{ -s.diferencia }}
-              }
-            </p>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <app-oso [nombre]="s.cuadra ? 'sello' : 'sello-serio'" [tamano]="64"
+                [animacion]="s.cuadra ? 'saludar' : 'ninguna'" />
+              <p class="aviso" [class.ok]="s.cuadra" role="status">
+                <ion-icon [name]="s.cuadra ? 'checkmark-circle' : 'warning'" aria-hidden="true"></ion-icon>
+                @if (s.cuadra) {
+                  Los votos suman {{ s.suma }}: cuadra con el total.
+                } @else if (s.diferencia > 0) {
+                  Suma {{ s.suma }} · faltan {{ s.diferencia }}
+                } @else {
+                  Suma {{ s.suma }} · sobran {{ -s.diferencia }}
+                }
+              </p>
+            </div>
           }
           <ion-button type="submit" expand="block">Continuar a la foto</ion-button>
         </form>
       }
 
       @case ('foto') {
-        <h2>Paso 2 de 4 · Foto del acta</h2>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <app-oso nombre="votando" [tamano]="76" />
+          <h2>Paso 2 de 4 · Foto del acta</h2>
+        </div>
         <p class="texto-secundario">Fotografía el acta completa, de frente y con buena luz.</p>
         @if (foto(); as f) {
           <img class="vista-previa" [src]="f.dataUrl" alt="Foto del acta" />
@@ -75,7 +85,10 @@
       }
 
       @case ('ubicacion') {
-        <h2>Paso 3 de 4 · Ubicación</h2>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <app-oso nombre="mariposa" [tamano]="60" />
+          <h2>Paso 3 de 4 · Ubicación</h2>
+        </div>
         <p class="texto-secundario">Obtén tu ubicación dentro del recinto.</p>
         @if (ubicacion(); as u) {
           <div class="tarjeta">
@@ -97,7 +110,10 @@
       }
 
       @case ('resumen') {
-        <h2>Paso 4 de 4 · Revisa y envía</h2>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <app-oso nombre="sello" [tamano]="76" animacion="saludar" />
+          <h2>Paso 4 de 4 · Revisa y envía</h2>
+        </div>
         <div class="tarjeta">
           @for (o of organizaciones(); track o.organizacionId) {
             <p class="fila-resumen"><span>{{ o.siglas }} · {{ o.candidato }}</span>

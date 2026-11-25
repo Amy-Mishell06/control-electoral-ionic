@@ -1,32 +1,31 @@
 <ion-content [fullscreen]="true">
   <div class="pantalla">
     <header class="fondo-huellas encabezado">
-      <div class="mascota">
-        <svg viewBox="0 0 64 64" width="68" height="68" fill="none" stroke="currentColor" stroke-width="2.6"
-          stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Mascota de Yupana: oso de anteojos">
-          <circle cx="18" cy="17" r="6" />
-          <circle cx="46" cy="17" r="6" />
-          <circle cx="32" cy="35" r="18" />
-          <circle cx="25" cy="32" r="6" />
-          <circle cx="39" cy="32" r="6" />
-          <path d="M31 32 h2" />
-          <ellipse cx="32" cy="44" rx="5" ry="3.5" />
-        </svg>
-      </div>
       <h1>Yupana</h1>
       <p>Cada voto, bien contado</p>
     </header>
 
     <form class="tarjeta" [formGroup]="form" (ngSubmit)="ingresar()" novalidate>
+      <!-- Mascota colgada del borde del formulario (ADR-013) -->
+      <div class="oso" [class.ojos-cerrados]="tapaOjos()" [class.sacudir]="sacudir()" aria-hidden="true">
+        <img class="oso-capa oso-abierto" src="assets/osos/oso-colgando.webp" alt="" />
+        <img class="oso-capa oso-cerrado" src="assets/osos/oso-colgando-cerrado.webp" alt="" />
+        <img class="mariposa" src="assets/osos/oso-colgando-mariposa.webp" alt="" />
+      </div>
+
       <h2>Iniciar sesión</h2>
 
       <ion-input formControlName="cedula" label="Cédula" labelPlacement="stacked" fill="outline" inputmode="numeric"
         maxlength="10" autocomplete="username" [errorText]="mensajeCedula()">
       </ion-input>
 
-      <ion-input formControlName="clave" type="password" label="Contraseña" labelPlacement="stacked" fill="outline"
-        autocomplete="current-password" errorText="Ingresa tu contraseña.">
-        <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+      <ion-input formControlName="clave" [type]="verClave() ? 'text' : 'password'" label="Contraseña"
+        labelPlacement="stacked" fill="outline" autocomplete="current-password" errorText="Ingresa tu contraseña."
+        (ionFocus)="claveEnfocada.set(true)" (ionBlur)="claveEnfocada.set(false)">
+        <ion-button slot="end" fill="clear" (mousedown)="$event.preventDefault()" (click)="alternarClave()"
+          [attr.aria-label]="verClave() ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+          <ion-icon slot="icon-only" [name]="verClave() ? 'eye-off' : 'eye'" aria-hidden="true"></ion-icon>
+        </ion-button>
       </ion-input>
 
       @if (error()) {
@@ -40,7 +39,7 @@
         Ingresar
         }
       </ion-button>
-      
+
       <a class="enlace" routerLink="/recuperar">¿Olvidaste tu contraseña?</a>
     </form>
   </div>

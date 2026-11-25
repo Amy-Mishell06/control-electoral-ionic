@@ -20,9 +20,17 @@
       <p class="mensaje-error" role="alert">{{ servicio.error() }}</p>
       <ion-button fill="outline" (click)="servicio.cargar()">Reintentar</ion-button>
     } @else {
-      <p class="texto-secundario">
-        {{ servicio.mesas().length }} mesas · {{ sinVeedor() }} sin veedor
-      </p>
+      <section class="tarjeta bienvenida">
+        <app-oso nombre="equipo" [tamano]="110" animacion="saludar" />
+        <div>
+          <h2>Tu equipo en el recinto</h2>
+          <div class="cifras">
+            <div><strong>{{ servicio.mesas().length }}</strong><span>mesas</span></div>
+            <div><strong>{{ sinVeedor() }}</strong><span>sin veedor</span></div>
+            <div><strong>{{ actasRecibidas() }}/{{ servicio.mesas().length * 2 }}</strong><span>actas</span></div>
+          </div>
+        </div>
+      </section>
 
       @for (mesa of servicio.mesas(); track mesa.juntaId) {
         <article class="tarjeta">

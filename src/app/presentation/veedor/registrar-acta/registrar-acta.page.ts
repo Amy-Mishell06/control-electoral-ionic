@@ -19,6 +19,7 @@ import {
 import { ResultadoTotales, validarTotalesActa } from '../../../core/domain/rules/acta.rule';
 import { UMBRAL_NITIDEZ } from '../../../core/domain/rules/nitidez.rule';
 import { AvisosService } from '../../shared/avisos.service';
+import { OsoComponent } from '../../shared/oso/oso.component';
 
 type Paso = 'votos' | 'foto' | 'ubicacion' | 'resumen';
 const PASOS: Paso[] = ['votos', 'foto', 'ubicacion', 'resumen'];
@@ -31,7 +32,7 @@ const TECLAS_BLOQUEADAS = ['-', '+', 'e', 'E', '.', ','];
   templateUrl: './registrar-acta.page.html',
   styleUrls: ['./registrar-acta.page.scss'],
   imports: [
-    ReactiveFormsModule, DatePipe, DecimalPipe,
+    ReactiveFormsModule, DatePipe, DecimalPipe, OsoComponent,
     IonHeader, IonToolbar, IonTitle, IonButtons, IonBackButton, IonButton, IonContent,
     IonInput, IonIcon, IonSpinner,
   ],

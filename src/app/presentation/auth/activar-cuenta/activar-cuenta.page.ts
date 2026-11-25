@@ -9,6 +9,7 @@ import {
 } from '@ionic/angular';
 import { SesionService } from '../../../core/application/sesion.service';
 import { validarClaveNueva } from '../../../core/domain/rules/clave.rule';
+import { OsoComponent } from '../../shared/oso/oso.component';
 import { enmascararCorreo } from '../../shared/utils/enmascarar-correo';
 
 type Paso = 'enviar' | 'codigo' | 'clave';
@@ -29,7 +30,7 @@ function clavesIgualesValidator(grupo: AbstractControl): ValidationErrors | null
   templateUrl: './activar-cuenta.page.html',
   styleUrls: ['./activar-cuenta.page.scss'],
   imports: [
-    ReactiveFormsModule,
+    ReactiveFormsModule, OsoComponent,
     IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonContent,
     IonInput, IonInputPasswordToggle, IonSpinner,
   ],

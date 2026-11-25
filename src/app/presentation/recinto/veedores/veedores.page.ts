@@ -6,11 +6,12 @@ import {
 import { addIcons } from 'ionicons';
 import { personAdd } from 'ionicons/icons';
 import { MesasService } from '../../../core/application/mesas.service';
+import { OsoComponent } from '../../shared/oso/oso.component';
 
 @Component({
   selector: 'app-veedores',
   imports: [
-    RouterLink, IonHeader, IonToolbar, IonTitle, IonButtons, IonBackButton, IonButton, IonContent,
+    RouterLink, OsoComponent, IonHeader, IonToolbar, IonTitle, IonButtons, IonBackButton, IonButton, IonContent,
     IonIcon, IonSpinner,
   ],
   template: `
@@ -30,8 +31,12 @@ import { MesasService } from '../../../core/application/mesas.service';
         @if (servicio.cargando() && servicio.veedores().length === 0) {
           <div class="centrado"><ion-spinner name="crescent"></ion-spinner></div>
         } @else if (servicio.veedores().length === 0) {
-          <p class="estado-vacio">Todavía no hay veedores en tu recinto.</p>
+          <div class="estado-vacio">
+            <app-oso nombre="equipo" [tamano]="170" animacion="saludar" />
+            <p>Todavía no hay veedores en tu recinto. Crea el primero para armar tu equipo.</p>
+          </div>
         } @else {
+          <p class="texto-secundario">{{ servicio.veedores().length }} veedores en tu equipo</p>
           @for (veedor of servicio.veedores(); track veedor.id) {
             <article class="tarjeta">
               <h3>{{ veedor.nombre }}</h3>

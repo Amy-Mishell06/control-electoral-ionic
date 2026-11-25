@@ -99,3 +99,46 @@ ion-progress-bar {
   gap: 8px;
   margin-top: 8px;
 }
+
+.resumen {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.resumen-texto {
+  flex: 1;
+  min-width: 0;
+}
+
+.oso-resumen {
+  width: 96px;
+  flex-shrink: 0;
+  animation: flotar 3.5s ease-in-out infinite;
+
+  /* Mientras carga, "cuenta" más rápido */
+  &.contando {
+    animation: contar 0.5s ease-in-out infinite;
+  }
+}
+
+.oso-vacio {
+  width: 140px;
+  display: block;
+  margin: 8px auto;
+  animation: flotar 3.5s ease-in-out infinite;
+}
+
+@keyframes flotar {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes contar {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .oso-resumen, .oso-vacio { animation: none; }
+}

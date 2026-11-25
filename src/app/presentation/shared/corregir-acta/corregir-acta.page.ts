@@ -17,6 +17,7 @@ import { CorreccionPort } from '../../../core/domain/ports/correccion.port';
 import { ResultadoTotales, validarTotalesActa } from '../../../core/domain/rules/acta.rule';
 import { UMBRAL_NITIDEZ } from '../../../core/domain/rules/nitidez.rule';
 import { AvisosService } from '../avisos.service';
+import { OsoComponent } from '../oso/oso.component';
 
 const ENTERO = [Validators.required, Validators.pattern(/^\d+$/)];
 const TECLAS_BLOQUEADAS = ['-', '+', 'e', 'E', '.', ','];
@@ -30,7 +31,7 @@ const TECLAS_BLOQUEADAS = ['-', '+', 'e', 'E', '.', ','];
   templateUrl: './corregir-acta.page.html',
   styleUrls: ['./corregir-acta.page.scss'],
   imports: [
-    ReactiveFormsModule,
+    ReactiveFormsModule, OsoComponent,
     IonHeader, IonToolbar, IonTitle, IonButtons, IonBackButton, IonButton, IonContent,
     IonInput, IonIcon, IonSpinner,
   ],

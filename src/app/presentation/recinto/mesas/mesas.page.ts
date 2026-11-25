@@ -10,15 +10,25 @@ import { MesasService } from '../../../core/application/mesas.service';
 import { SesionService } from '../../../core/application/sesion.service';
 import { EstadoJunta } from '../../../core/domain/models/junta.model';
 import { AvisosService } from '../../shared/avisos.service';
+import { OsoComponent } from '../../shared/oso/oso.component';
 import { COLOR_ESTADO, TEXTO_ESTADO } from '../../shared/utils/estado-acta';
 
 @Component({
   selector: 'app-mesas',
   templateUrl: './mesas.page.html',
   imports: [
-    RouterLink, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonContent, IonIcon,
+    RouterLink, OsoComponent, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonContent, IonIcon,
     IonSpinner, IonBadge,
   ],
+  styles: [`
+    .bienvenida { display: flex; align-items: center; gap: 14px; }
+    .bienvenida app-oso { flex-shrink: 0; }
+    .bienvenida h2 { margin: 0 0 6px; font-family: var(--app-font-titulos); font-size: 1.25rem; }
+    .cifras { display: flex; gap: 16px; flex-wrap: wrap; }
+    .cifras div { display: flex; flex-direction: column; }
+    .cifras strong { font-size: 1.3rem; color: var(--ion-color-primary); }
+    .cifras span { font-size: 0.8rem; color: var(--app-texto-secundario); }
+  `],
 })
 export class MesasPage {
   readonly servicio = inject(MesasService);
@@ -31,6 +41,13 @@ export class MesasPage {
   readonly colorEstado = COLOR_ESTADO;
   readonly recinto = computed(() => this.servicio.mesas()[0]?.recinto ?? 'Mi recinto');
   readonly sinVeedor = computed(() => this.servicio.mesas().filter((m) => !m.veedorId).length);
+  /** Actas que ya llegaron (alcalde + prefecto) de todas las mesas del recinto. */
+  readonly actasRecibidas = computed(() =>
+    this.servicio.mesas().reduce(
+      (s, m) => s + (m.estadoAlcalde !== 'pendiente' ? 1 : 0) + (m.estadoPrefecto !== 'pendiente' ? 1 : 0),
+      0,
+    ),
+  );
 
   constructor() {
     addIcons({ logOut, people });
