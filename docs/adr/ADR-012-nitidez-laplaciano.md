@@ -50,4 +50,4 @@ Calibramos el umbral con unas 10 fotos nítidas y 10 borrosas de un acta de prue
 
 ## Uso de IA
 
-Le preguntamos a Claude qué técnica usar para comprobar la nitidez de una foto en una app Ionic sin depender de internet, y propuso la varianza del Laplaciano calculada en un canvas con un umbral calibrado. La aceptamos en equipo porque no agrega dependencias, funciona sin internet y podemos explicar cada paso en la defensa; los valores que obtengamos en la calibración los registramos en el README: [completar].
+Le preguntamos a Claude qué técnica usar para comprobar la nitidez de una foto en una app Ionic sin depender de internet, y propuso la varianza del Laplaciano calculada en un canvas con un umbral calibrado. La aceptamos en equipo porque no agrega dependencias, funciona sin internet y podemos explicar cada paso en la defensa. En la calibración, una foto nítida del acta dio una varianza de 3524 y una parcialmente borrosa dio 460, así que fijamos el umbral en 800 (`UMBRAL_NITIDEZ`), con margen para ambos lados; los valores también están en el README.

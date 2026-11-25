@@ -22,7 +22,7 @@
 | Radio de esquinas | 16 px |
 | Estilo de íconos | Ionicons filled |
 | Modo oscuro | Sí (sigue la configuración del celular) |
-| Archivos Lottie y licencia | [completar según ADR-013] |
+| Archivos Lottie y licencia | No se usan archivos Lottie: las animaciones son CSS sobre ilustraciones propias separadas en capas (`src/assets/osos/`), generadas con Gemini por la autora. |
 
 ## Modo oscuro
 
