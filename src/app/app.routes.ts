@@ -65,6 +65,12 @@ export const routes: Routes = [
           import('./presentation/recinto/veedores/veedores.page').then((m) => m.VeedoresPage),
       },
       {
+        path: 'acta/:juntaId/:dignidad',
+        loadComponent: () =>
+          import('./presentation/shared/corregir-acta/corregir-acta.page').then((m) => m.CorregirActaPage),
+        data: { puedeCambiarFoto: true, volver: '/recinto' },
+      },
+      {
         path: 'veedores/nuevo',
         loadComponent: () =>
           import('./presentation/recinto/nuevo-veedor/nuevo-veedor.page').then((m) => m.NuevoVeedorPage),
@@ -84,6 +90,12 @@ export const routes: Routes = [
         path: 'acta/:juntaId/:dignidad',
         loadComponent: () =>
           import('./presentation/veedor/registrar-acta/registrar-acta.page').then((m) => m.RegistrarActaPage),
+      },
+      {
+        path: 'acta/:juntaId/:dignidad/corregir',
+        loadComponent: () =>
+          import('./presentation/shared/corregir-acta/corregir-acta.page').then((m) => m.CorregirActaPage),
+        data: { puedeCambiarFoto: false, volver: '/veedor' },
       },
     ],
   },

@@ -1,0 +1,104 @@
+<ion-header>
+  <ion-toolbar class="huellas" color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="volver"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Corregir acta</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="contenedor">
+    @if (cargando()) {
+      <div class="centrado"><ion-spinner name="crescent"></ion-spinner></div>
+    } @else if (acta(); as a) {
+      <section class="tarjeta">
+        <div class="fila-titulo">
+          <strong>Mesa {{ a.mesa }} · {{ textoDignidad }}</strong>
+          <span class="estado-acta" [class.corregida]="a.estado === 'corregida'">
+            {{ a.estado === 'corregida' ? 'Corregida' : 'Registrada' }} · v{{ a.version }}
+          </span>
+        </div>
+        <p class="texto-secundario">Cambia solo los valores que estén mal. La versión anterior queda en el historial.</p>
+      </section>
+
+      <form class="formulario" [formGroup]="form" (ngSubmit)="guardar()">
+        <h3>Votos por organización</h3>
+        @for (v of a.votos; track v.organizacionId) {
+          <ion-input
+            type="number" inputmode="numeric" min="0" step="1" fill="outline" labelPlacement="stacked"
+            [label]="v.siglas + ' — ' + v.candidato"
+            [formControlName]="v.organizacionId"
+            (keydown)="soloDigitos($event)"
+            errorText="Escribe un número entero, sin negativos."
+          ></ion-input>
+        }
+
+        <h3>Otros valores</h3>
+        <ion-input type="number" inputmode="numeric" min="0" step="1" fill="outline" labelPlacement="stacked"
+          label="Votos nulos" formControlName="nulos" (keydown)="soloDigitos($event)"
+          errorText="Escribe un número entero, sin negativos."></ion-input>
+        <ion-input type="number" inputmode="numeric" min="0" step="1" fill="outline" labelPlacement="stacked"
+          label="Votos blancos" formControlName="blancos" (keydown)="soloDigitos($event)"
+          errorText="Escribe un número entero, sin negativos."></ion-input>
+        <ion-input type="number" inputmode="numeric" min="0" step="1" fill="outline" labelPlacement="stacked"
+          label="Total de sufragantes" formControlName="total" (keydown)="soloDigitos($event)"
+          errorText="Escribe un número entero, sin negativos."></ion-input>
+
+        @if (suma(); as s) {
+          <p class="cuadre" [class.mal]="!s.cuadra">
+            <ion-icon [name]="s.cuadra ? 'checkmark-circle' : 'warning'"></ion-icon>
+            @if (s.cuadra) {
+              La suma cuadra: {{ s.suma }}
+            } @else {
+              Suma {{ s.suma }} · diferencia {{ s.diferencia }}
+            }
+          </p>
+        }
+
+        <h3>Foto del acta</h3>
+        <div class="acciones">
+          @if (a.fotoRuta) {
+            <ion-button fill="outline" size="small" (click)="verFotoActual()">
+              <ion-icon slot="start" name="image"></ion-icon>
+              Ver foto actual
+            </ion-button>
+          }
+          @if (puedeCambiarFoto) {
+            <ion-button fill="outline" size="small" (click)="tomarFotoNueva()">
+              <ion-icon slot="start" name="camera"></ion-icon>
+              {{ fotoNueva() ? 'Tomar otra' : 'Cambiar foto' }}
+            </ion-button>
+          }
+        </div>
+        @if (!puedeCambiarFoto) {
+          <p class="texto-secundario">Solo el coordinador del recinto puede cambiar la foto.</p>
+        }
+        @if (fotoNueva(); as f) {
+          <img class="vista-previa" [src]="f.dataUrl" alt="Nueva foto del acta" />
+          <p class="cuadre" [class.mal]="!fotoNuevaNitida()">
+            <ion-icon [name]="fotoNuevaNitida() ? 'checkmark-circle' : 'warning'"></ion-icon>
+            {{ fotoNuevaNitida() ? 'Foto nítida' : 'La foto está borrosa' }} (valor {{ f.nitidez.toFixed(0) }})
+          </p>
+        }
+
+        @if (error()) {
+          <p class="mensaje-error" role="alert">{{ error() }}</p>
+          @if (error()?.includes('cambió')) {
+            <ion-button fill="clear" (click)="cargar()">Cargar datos actuales</ion-button>
+          }
+        }
+
+        <ion-button type="submit" expand="block" [disabled]="guardando() || !hayCambios()">
+          @if (guardando()) {
+            <ion-spinner name="crescent"></ion-spinner>
+          } @else {
+            Guardar corrección
+          }
+        </ion-button>
+      </form>
+    } @else if (error()) {
+      <p class="mensaje-error" role="alert">{{ error() }}</p>
+    }
+  </div>
+</ion-content>

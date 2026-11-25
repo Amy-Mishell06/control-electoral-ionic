@@ -28,6 +28,8 @@ import { CapacitorGpsAdapter } from './app/core/infrastructure/capacitor/capacit
 import { CanvasNitidezAdapter } from './app/core/infrastructure/canvas/canvas-nitidez.adapter';
 import { DashboardPort } from './app/core/domain/ports/dashboard.port';
 import { SupabaseDashboardRepository } from './app/core/infrastructure/supabase/supabase-dashboard.repository';
+import { CorreccionPort } from './app/core/domain/ports/correccion.port';
+import { SupabaseCorreccionRepository } from './app/core/infrastructure/supabase/supabase-correccion.repository';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -41,6 +43,7 @@ bootstrapApplication(AppComponent, {
     { provide: GpsPort, useClass: CapacitorGpsAdapter },
     { provide: NitidezPort, useClass: CanvasNitidezAdapter },
     { provide: DashboardPort, useClass: SupabaseDashboardRepository },
+    { provide: CorreccionPort, useClass: SupabaseCorreccionRepository },
     provideIonicAngular(),
     provideRouter(routes, withPreloading(PreloadAllModules), withComponentInputBinding()),
   ],
