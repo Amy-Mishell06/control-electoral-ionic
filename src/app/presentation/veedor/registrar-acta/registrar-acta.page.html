@@ -1,0 +1,129 @@
+<ion-header>
+  <ion-toolbar class="huellas">
+    <ion-buttons slot="start"><ion-back-button defaultHref="/veedor"></ion-back-button></ion-buttons>
+    <ion-title>Mesa {{ mesa()?.numero }} · {{ textoDignidad }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="contenedor">
+    <div class="pasos" aria-label="Paso {{ indicePaso() + 1 }} de 4">
+      @for (n of [0, 1, 2, 3]; track n) {
+        <span [class.activo]="n <= indicePaso()"></span>
+      }
+    </div>
+
+    @switch (paso()) {
+      @case ('votos') {
+        <h2>Paso 1 de 4 · Votos</h2>
+        <form class="formulario" [formGroup]="form" (ngSubmit)="continuarVotos()" novalidate>
+          @for (o of organizaciones(); track o.organizacionId) {
+            <ion-input [formControlName]="o.organizacionId" type="number" inputmode="numeric"
+              min="0" step="1" (keydown)="soloDigitos($event)"
+              [label]="o.siglas + ' · ' + o.candidato" labelPlacement="stacked" fill="outline"
+              errorText="Escribe un número entero, sin negativos."></ion-input>
+          }
+          <ion-input formControlName="nulos" type="number" inputmode="numeric"
+            min="0" step="1" (keydown)="soloDigitos($event)" label="Votos nulos"
+            labelPlacement="stacked" fill="outline" errorText="Escribe un número entero, sin negativos."></ion-input>
+          <ion-input formControlName="blancos" type="number" inputmode="numeric"
+            min="0" step="1" (keydown)="soloDigitos($event)" label="Votos blancos"
+            labelPlacement="stacked" fill="outline" errorText="Escribe un número entero, sin negativos."></ion-input>
+          <ion-input formControlName="total" type="number" inputmode="numeric"
+            min="0" step="1" (keydown)="soloDigitos($event)" label="Total de sufragantes"
+            labelPlacement="stacked" fill="outline" errorText="Escribe un número entero, sin negativos."></ion-input>
+
+          @if (suma(); as s) {
+            <p class="aviso" [class.ok]="s.cuadra" role="status">
+              <ion-icon [name]="s.cuadra ? 'checkmark-circle' : 'warning'" aria-hidden="true"></ion-icon>
+              @if (s.cuadra) {
+                Los votos suman {{ s.suma }}: cuadra con el total.
+              } @else if (s.diferencia > 0) {
+                Suma {{ s.suma }} · faltan {{ s.diferencia }}
+              } @else {
+                Suma {{ s.suma }} · sobran {{ -s.diferencia }}
+              }
+            </p>
+          }
+          <ion-button type="submit" expand="block">Continuar a la foto</ion-button>
+        </form>
+      }
+
+      @case ('foto') {
+        <h2>Paso 2 de 4 · Foto del acta</h2>
+        <p class="texto-secundario">Fotografía el acta completa, de frente y con buena luz.</p>
+        @if (foto(); as f) {
+          <img class="vista-previa" [src]="f.dataUrl" alt="Foto del acta" />
+          <p class="aviso" [class.ok]="f.nitida" role="status">
+            <ion-icon [name]="f.nitida ? 'checkmark-circle' : 'warning'" aria-hidden="true"></ion-icon>
+            @if (f.nitida) {
+              Foto nítida (valor {{ f.nitidez }}).
+            } @else {
+              La foto está borrosa (valor {{ f.nitidez }}, mínimo {{ umbral }}). Tómala de nuevo.
+            }
+          </p>
+        }
+        <ion-button expand="block" [fill]="foto()?.nitida ? 'outline' : 'solid'"
+          (click)="tomarFoto()" [disabled]="cargando()">
+          <ion-icon slot="start" name="camera"></ion-icon>
+          {{ foto() ? 'Tomar otra foto' : 'Tomar foto' }}
+        </ion-button>
+        <ion-button expand="block" (click)="irA('ubicacion')" [disabled]="!foto()?.nitida">
+          Continuar a la ubicación
+        </ion-button>
+        <ion-button expand="block" fill="clear" (click)="irA('votos')">Volver a los votos</ion-button>
+      }
+
+      @case ('ubicacion') {
+        <h2>Paso 3 de 4 · Ubicación</h2>
+        <p class="texto-secundario">Obtén tu ubicación dentro del recinto.</p>
+        @if (ubicacion(); as u) {
+          <div class="tarjeta">
+            <p><strong>Latitud:</strong> {{ u.latitud | number: '1.6-6' }}</p>
+            <p><strong>Longitud:</strong> {{ u.longitud | number: '1.6-6' }}</p>
+            <p><strong>Precisión:</strong> {{ u.precision | number: '1.0-0' }} m</p>
+            <p><strong>Hora:</strong> {{ u.capturadaAt | date: 'HH:mm:ss' }}</p>
+          </div>
+        }
+        <ion-button expand="block" [fill]="ubicacion() ? 'outline' : 'solid'"
+          (click)="obtenerUbicacion()" [disabled]="cargando()">
+          <ion-icon slot="start" name="location"></ion-icon>
+          {{ ubicacion() ? 'Actualizar ubicación' : 'Obtener ubicación' }}
+        </ion-button>
+        <ion-button expand="block" (click)="irA('resumen')" [disabled]="!ubicacion()">
+          Revisar y enviar
+        </ion-button>
+        <ion-button expand="block" fill="clear" (click)="irA('foto')">Volver a la foto</ion-button>
+      }
+
+      @case ('resumen') {
+        <h2>Paso 4 de 4 · Revisa y envía</h2>
+        <div class="tarjeta">
+          @for (o of organizaciones(); track o.organizacionId) {
+            <p class="fila-resumen"><span>{{ o.siglas }} · {{ o.candidato }}</span>
+              <strong>{{ form.controls[o.organizacionId].value }}</strong></p>
+          }
+          <p class="fila-resumen"><span>Nulos</span><strong>{{ form.controls['nulos'].value }}</strong></p>
+          <p class="fila-resumen"><span>Blancos</span><strong>{{ form.controls['blancos'].value }}</strong></p>
+          <p class="fila-resumen"><span>Total de sufragantes</span><strong>{{ form.controls['total'].value }}</strong></p>
+        </div>
+        @if (foto(); as f) {
+          <img class="vista-previa pequena" [src]="f.dataUrl" alt="Foto del acta" />
+        }
+        <ion-button expand="block" (click)="enviar()" [disabled]="cargando()">
+          @if (cargando()) { <ion-spinner name="crescent"></ion-spinner> } @else { Enviar acta }
+        </ion-button>
+        <ion-button expand="block" fill="clear" (click)="irA('votos')" [disabled]="cargando()">
+          Corregir votos
+        </ion-button>
+      }
+    }
+
+    @if (cargando() && paso() !== 'resumen') {
+      <div class="centrado"><ion-spinner name="crescent"></ion-spinner></div>
+    }
+    @if (error()) {
+      <p class="mensaje-error" role="alert">{{ error() }}</p>
+    }
+  </div>
+</ion-content>

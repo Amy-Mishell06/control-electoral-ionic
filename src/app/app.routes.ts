@@ -69,8 +69,18 @@ export const routes: Routes = [
   {
     path: 'veedor',
     canActivate: [authGuard, cambioClaveGuard, rolGuard('veedor')],
-    loadComponent: enConstruccion,
-    data: { titulo: 'Mis mesas' },
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./presentation/veedor/mis-mesas/mis-mesas.page').then((m) => m.MisMesasPage),
+      },
+      {
+        path: 'acta/:juntaId/:dignidad',
+        loadComponent: () =>
+          import('./presentation/veedor/registrar-acta/registrar-acta.page').then((m) => m.RegistrarActaPage),
+      },
+    ],
   },
   { path: '**', redirectTo: 'login' },
 ];

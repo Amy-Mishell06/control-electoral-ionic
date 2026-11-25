@@ -18,6 +18,14 @@ import { SupabaseRecintosRepository } from './app/core/infrastructure/supabase/s
 import { SupabaseUsuariosRepository } from './app/core/infrastructure/supabase/supabase-usuarios.repository';
 import { JuntasPort } from './app/core/domain/ports/juntas.port';
 import { SupabaseJuntasRepository } from './app/core/infrastructure/supabase/supabase-juntas.repository';
+import { ActasPort } from './app/core/domain/ports/actas.port';
+import { CamaraPort } from './app/core/domain/ports/camara.port';
+import { GpsPort } from './app/core/domain/ports/gps.port';
+import { NitidezPort } from './app/core/domain/ports/nitidez.port';
+import { SupabaseActasRepository } from './app/core/infrastructure/supabase/supabase-actas.repository';
+import { CapacitorCamaraAdapter } from './app/core/infrastructure/capacitor/capacitor-camara.adapter';
+import { CapacitorGpsAdapter } from './app/core/infrastructure/capacitor/capacitor-gps.adapter';
+import { CanvasNitidezAdapter } from './app/core/infrastructure/canvas/canvas-nitidez.adapter';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -26,6 +34,10 @@ bootstrapApplication(AppComponent, {
     { provide: RecintosPort, useClass: SupabaseRecintosRepository },
     { provide: UsuariosPort, useClass: SupabaseUsuariosRepository },
     { provide: JuntasPort, useClass: SupabaseJuntasRepository },
+    { provide: ActasPort, useClass: SupabaseActasRepository },
+    { provide: CamaraPort, useClass: CapacitorCamaraAdapter },
+    { provide: GpsPort, useClass: CapacitorGpsAdapter },
+    { provide: NitidezPort, useClass: CanvasNitidezAdapter },
     provideIonicAngular(),
     provideRouter(routes, withPreloading(PreloadAllModules), withComponentInputBinding()),
   ],
