@@ -16,6 +16,8 @@ import { RecintosPort } from './app/core/domain/ports/recintos.port';
 import { UsuariosPort } from './app/core/domain/ports/usuarios.port';
 import { SupabaseRecintosRepository } from './app/core/infrastructure/supabase/supabase-recintos.repository';
 import { SupabaseUsuariosRepository } from './app/core/infrastructure/supabase/supabase-usuarios.repository';
+import { JuntasPort } from './app/core/domain/ports/juntas.port';
+import { SupabaseJuntasRepository } from './app/core/infrastructure/supabase/supabase-juntas.repository';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -23,6 +25,7 @@ bootstrapApplication(AppComponent, {
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: RecintosPort, useClass: SupabaseRecintosRepository },
     { provide: UsuariosPort, useClass: SupabaseUsuariosRepository },
+    { provide: JuntasPort, useClass: SupabaseJuntasRepository },
     provideIonicAngular(),
     provideRouter(routes, withPreloading(PreloadAllModules), withComponentInputBinding()),
   ],

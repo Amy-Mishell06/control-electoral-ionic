@@ -48,8 +48,23 @@ export const routes: Routes = [
   {
     path: 'recinto',
     canActivate: [authGuard, cambioClaveGuard, rolGuard('coordinador_recinto')],
-    loadComponent: enConstruccion,
-    data: { titulo: 'Coordinación de recinto' },
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./presentation/recinto/mesas/mesas.page').then((m) => m.MesasPage),
+      },
+      {
+        path: 'veedores',
+        loadComponent: () =>
+          import('./presentation/recinto/veedores/veedores.page').then((m) => m.VeedoresPage),
+      },
+      {
+        path: 'veedores/nuevo',
+        loadComponent: () =>
+          import('./presentation/recinto/nuevo-veedor/nuevo-veedor.page').then((m) => m.NuevoVeedorPage),
+      },
+    ],
   },
   {
     path: 'veedor',

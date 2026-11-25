@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar class="huellas">
+    <ion-title>{{ recinto() }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/recinto/veedores" aria-label="Veedores">
+        <ion-icon slot="icon-only" name="people"></ion-icon>
+      </ion-button>
+      <ion-button (click)="salir()" aria-label="Cerrar sesión">
+        <ion-icon slot="icon-only" name="log-out"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="contenedor">
+    @if (servicio.cargando() && servicio.mesas().length === 0) {
+      <div class="centrado"><ion-spinner name="crescent"></ion-spinner></div>
+    } @else if (servicio.error()) {
+      <p class="mensaje-error" role="alert">{{ servicio.error() }}</p>
+      <ion-button fill="outline" (click)="servicio.cargar()">Reintentar</ion-button>
+    } @else {
+      <p class="texto-secundario">
+        {{ servicio.mesas().length }} mesas · {{ sinVeedor() }} sin veedor
+      </p>
+
+      @for (mesa of servicio.mesas(); track mesa.juntaId) {
+        <article class="tarjeta">
+          <h3>Mesa {{ mesa.numero }}</h3>
+          <p>
+            @if (mesa.veedor) { Veedor: {{ mesa.veedor }} } @else { Sin veedor asignado }
+          </p>
+          <div class="estados">
+            <ion-badge [color]="colorEstado[mesa.estadoAlcalde]">
+              Alcalde: {{ textoEstado[mesa.estadoAlcalde] }}
+            </ion-badge>
+            <ion-badge [color]="colorEstado[mesa.estadoPrefecto]">
+              Prefecto: {{ textoEstado[mesa.estadoPrefecto] }}
+            </ion-badge>
+          </div>
+          <ion-button fill="outline" size="small" (click)="elegirVeedor(mesa)">
+            {{ mesa.veedor ? 'Cambiar veedor' : 'Asignar veedor' }}
+          </ion-button>
+        </article>
+      }
+    }
+  </div>
+</ion-content>

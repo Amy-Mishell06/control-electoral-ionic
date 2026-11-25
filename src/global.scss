@@ -115,3 +115,24 @@ form.formulario {
   ion-input { --border-radius: var(--app-radio); }
   ion-button { min-height: var(--app-boton-alto); margin: 0; font-size: 17px; }
 }
+
+.estados {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  ion-badge { padding: 6px 10px; border-radius: 999px; font-weight: 600; }
+}
+
+@media (prefers-color-scheme: dark) {
+  ion-alert {
+    --background: #16262a;
+  }
+
+  ion-alert .alert-title,
+  ion-alert .alert-message,
+  ion-alert .alert-radio-label,
+  ion-alert .alert-checkbox-label {
+    color: #e6eef0 !important;
+  }
+}
