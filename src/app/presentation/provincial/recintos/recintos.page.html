@@ -2,6 +2,9 @@
   <ion-toolbar class="huellas">
     <ion-title>Recintos</ion-title>
     <ion-buttons slot="end">
+      <ion-button routerLink="/provincial/dashboard" aria-label="Ver resultados">
+        <ion-icon slot="icon-only" name="stats-chart"></ion-icon>
+      </ion-button>
       <ion-button (click)="salir()" aria-label="Cerrar sesión">
         <ion-icon slot="icon-only" name="log-out"></ion-icon>
       </ion-button>
@@ -19,36 +22,35 @@
     </ion-button>
 
     @if (servicio.cargando() && servicio.recintos().length === 0) {
-      <div class="centrado"><ion-spinner name="crescent"></ion-spinner></div>
+    <div class="centrado"><ion-spinner name="crescent"></ion-spinner></div>
     } @else if (servicio.error()) {
-      <p class="mensaje-error" role="alert">{{ servicio.error() }}</p>
-      <ion-button fill="outline" (click)="servicio.cargar()">Reintentar</ion-button>
+    <p class="mensaje-error" role="alert">{{ servicio.error() }}</p>
+    <ion-button fill="outline" (click)="servicio.cargar()">Reintentar</ion-button>
     } @else if (servicio.recintos().length === 0) {
-      <p class="estado-vacio">Todavía no hay recintos. Crea el primero.</p>
+    <p class="estado-vacio">Todavía no hay recintos. Crea el primero.</p>
     } @else {
-      @for (recinto of servicio.recintos(); track recinto.id) {
-        <article class="tarjeta">
-          <div class="fila-titulo">
-            <ion-icon name="business" color="primary" aria-hidden="true"></ion-icon>
-            <div>
-              <h3>{{ recinto.nombre }}</h3>
-              <p>{{ recinto.parroquia }} · {{ recinto.cantidadJrv }} mesas</p>
-            </div>
-          </div>
-          @if (recinto.coordinador) {
-            <p class="fila-titulo">
-              <ion-icon name="person" aria-hidden="true"></ion-icon>
-              Coordinador: {{ recinto.coordinador }}
-            </p>
-          } @else {
-            <ion-button fill="outline" size="small"
-              [routerLink]="['/provincial/recintos', recinto.id, 'coordinador']">
-              <ion-icon slot="start" name="person-add"></ion-icon>
-              Crear coordinador
-            </ion-button>
-          }
-        </article>
+    @for (recinto of servicio.recintos(); track recinto.id) {
+    <article class="tarjeta">
+      <div class="fila-titulo">
+        <ion-icon name="business" color="primary" aria-hidden="true"></ion-icon>
+        <div>
+          <h3>{{ recinto.nombre }}</h3>
+          <p>{{ recinto.parroquia }} · {{ recinto.cantidadJrv }} mesas</p>
+        </div>
+      </div>
+      @if (recinto.coordinador) {
+      <p class="fila-titulo">
+        <ion-icon name="person" aria-hidden="true"></ion-icon>
+        Coordinador: {{ recinto.coordinador }}
+      </p>
+      } @else {
+      <ion-button fill="outline" size="small" [routerLink]="['/provincial/recintos', recinto.id, 'coordinador']">
+        <ion-icon slot="start" name="person-add"></ion-icon>
+        Crear coordinador
+      </ion-button>
       }
+    </article>
+    }
     }
   </div>
 </ion-content>

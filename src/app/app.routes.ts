@@ -38,6 +38,11 @@ export const routes: Routes = [
             .then((m) => m.NuevoRecintoPage),
       },
       {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('./presentation/provincial/dashboard/dashboard.page').then((m) => m.DashboardPage),
+      },
+      {
         path: 'recintos/:recintoId/coordinador',
         loadComponent: () =>
           import('./presentation/provincial/nuevo-coordinador/nuevo-coordinador.page')

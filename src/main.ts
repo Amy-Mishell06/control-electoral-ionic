@@ -26,6 +26,8 @@ import { SupabaseActasRepository } from './app/core/infrastructure/supabase/supa
 import { CapacitorCamaraAdapter } from './app/core/infrastructure/capacitor/capacitor-camara.adapter';
 import { CapacitorGpsAdapter } from './app/core/infrastructure/capacitor/capacitor-gps.adapter';
 import { CanvasNitidezAdapter } from './app/core/infrastructure/canvas/canvas-nitidez.adapter';
+import { DashboardPort } from './app/core/domain/ports/dashboard.port';
+import { SupabaseDashboardRepository } from './app/core/infrastructure/supabase/supabase-dashboard.repository';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -38,6 +40,7 @@ bootstrapApplication(AppComponent, {
     { provide: CamaraPort, useClass: CapacitorCamaraAdapter },
     { provide: GpsPort, useClass: CapacitorGpsAdapter },
     { provide: NitidezPort, useClass: CanvasNitidezAdapter },
+    { provide: DashboardPort, useClass: SupabaseDashboardRepository },
     provideIonicAngular(),
     provideRouter(routes, withPreloading(PreloadAllModules), withComponentInputBinding()),
   ],

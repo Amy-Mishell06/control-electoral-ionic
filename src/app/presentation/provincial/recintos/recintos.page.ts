@@ -1,10 +1,10 @@
 import { Component, computed, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import {
-  IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonSpinner, IonTitle, IonToolbar,
+  IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonSpinner, IonTitle, IonToolbar, 
 } from '@ionic/angular';
 import { addIcons } from 'ionicons';
-import { addCircle, business, logOut, person, personAdd } from 'ionicons/icons';
+import { addCircle, business, logOut, person, personAdd, statsChart } from 'ionicons/icons';
 import { RecintosService } from '../../../core/application/recintos.service';
 import { SesionService } from '../../../core/application/sesion.service';
 
@@ -22,7 +22,7 @@ export class RecintosPage {
   readonly nombre = computed(() => this.sesion.perfil()?.nombres ?? '');
 
   constructor() {
-    addIcons({ addCircle, business, logOut, person, personAdd });
+    addIcons({ addCircle, business, logOut, person, personAdd, statsChart });
   }
 
   /** Se recarga cada vez que se vuelve a esta pantalla. */
