@@ -4,7 +4,7 @@ import {
   IonBadge, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonSpinner, IonTitle, IonToolbar,
 } from '@ionic/angular';
 import { addIcons } from 'ionicons';
-import { camera, logOut } from 'ionicons/icons';
+import { camera, create, logOut } from 'ionicons/icons';
 import { MesasService } from '../../../core/application/mesas.service';
 import { SesionService } from '../../../core/application/sesion.service';
 import { Dignidad, EstadoActa } from '../../../core/domain/models/acta.model';
@@ -53,6 +53,11 @@ import { COLOR_ESTADO, TEXTO_ESTADO } from '../../shared/utils/estado-acta';
                       <ion-icon slot="start" name="camera"></ion-icon>
                       Registrar
                     </ion-button>
+                  } @else {
+                    <ion-button size="small" fill="outline" [routerLink]="['/veedor/acta', mesa.juntaId, d.valor, 'corregir']">
+                      <ion-icon slot="start" name="create"></ion-icon>
+                      Corregir
+                    </ion-button>
                   }
                 </div>
               }
@@ -63,7 +68,7 @@ import { COLOR_ESTADO, TEXTO_ESTADO } from '../../shared/utils/estado-acta';
     </ion-content>
   `,
   styles: [`
-    .fila-acta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .fila-acta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
     .fila-acta span { font-weight: 600; min-width: 90px; }
   `],
 })
@@ -81,7 +86,7 @@ export class MisMesasPage {
   ];
 
   constructor() {
-    addIcons({ camera, logOut });
+    addIcons({ camera, create, logOut });
   }
 
   ionViewWillEnter(): void {

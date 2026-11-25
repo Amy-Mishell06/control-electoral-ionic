@@ -38,9 +38,21 @@
               Prefecto: {{ textoEstado[mesa.estadoPrefecto] }}
             </ion-badge>
           </div>
-          <ion-button fill="outline" size="small" (click)="elegirVeedor(mesa)">
-            {{ mesa.veedor ? 'Cambiar veedor' : 'Asignar veedor' }}
-          </ion-button>
+          <div class="estados">
+            <ion-button fill="outline" size="small" (click)="elegirVeedor(mesa)">
+              {{ mesa.veedor ? 'Cambiar veedor' : 'Asignar veedor' }}
+            </ion-button>
+            @if (mesa.estadoAlcalde !== 'pendiente') {
+              <ion-button fill="clear" size="small" [routerLink]="['/recinto/acta', mesa.juntaId, 'alcalde']">
+                Corregir alcalde
+              </ion-button>
+            }
+            @if (mesa.estadoPrefecto !== 'pendiente') {
+              <ion-button fill="clear" size="small" [routerLink]="['/recinto/acta', mesa.juntaId, 'prefecto']">
+                Corregir prefecto
+              </ion-button>
+            }
+          </div>
         </article>
       }
     }
