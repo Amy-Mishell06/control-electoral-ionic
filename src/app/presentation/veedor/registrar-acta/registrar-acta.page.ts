@@ -23,6 +23,8 @@ import { AvisosService } from '../../shared/avisos.service';
 type Paso = 'votos' | 'foto' | 'ubicacion' | 'resumen';
 const PASOS: Paso[] = ['votos', 'foto', 'ubicacion', 'resumen'];
 const ENTERO = [Validators.required, Validators.pattern(/^\d+$/)];
+/** Teclas que permitirían negativos o decimales en un input numérico. */
+const TECLAS_BLOQUEADAS = ['-', '+', 'e', 'E', '.', ','];
 
 @Component({
   selector: 'app-registrar-acta',
@@ -83,6 +85,13 @@ export class RegistrarActaPage implements OnInit {
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe(() => this.actualizarSuma());
     });
+  }
+
+  /** Impide escribir negativos o decimales en los votos (ADR-006). */
+  soloDigitos(evento: KeyboardEvent): void {
+    if (TECLAS_BLOQUEADAS.includes(evento.key)) {
+      evento.preventDefault();
+    }
   }
 
   /** La suma se recalcula mientras el veedor escribe (ADR-005, ADR-006). */

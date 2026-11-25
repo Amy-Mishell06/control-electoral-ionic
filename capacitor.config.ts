@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'app-temp',
+  appId: 'ec.edu.epn.yupana',
+  appName: 'Yupana',
   webDir: 'www'
 };
 
