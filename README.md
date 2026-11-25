@@ -12,6 +12,25 @@ Aplicación móvil para el **control electoral de actas** en Quito (Pichincha). 
 
 ---
 
+## Capturas
+
+<table>
+  <tr>
+    <td align="center"><img src="docs/capturas/01-login.jpg" width="180" alt="Inicio de sesión"><br><sub>Inicio de sesión</sub></td>
+    <td align="center"><img src="docs/capturas/02-provincial-recintos.jpg" width="180" alt="Recintos del coordinador provincial"><br><sub>Provincial: recintos</sub></td>
+    <td align="center"><img src="docs/capturas/03-dashboard-votos.jpg" width="180" alt="Dashboard de votos"><br><sub>Dashboard: votos</sub></td>
+    <td align="center"><img src="docs/capturas/04-dashboard-avance.jpg" width="180" alt="Dashboard de avance por recinto"><br><sub>Dashboard: avance</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/capturas/05-coordinador-mesas.jpg" width="180" alt="Mesas del coordinador de recinto"><br><sub>Coordinador: mesas</sub></td>
+    <td align="center"><img src="docs/capturas/06-veedor-mis-mesas.jpg" width="180" alt="Mesas del veedor"><br><sub>Veedor: mis mesas</sub></td>
+    <td align="center"><img src="docs/capturas/07-registrar-acta.jpg" width="180" alt="Registro de votos del acta"><br><sub>Registrar acta</sub></td>
+    <td align="center"><img src="docs/capturas/08-acta-registrada.jpg" width="180" alt="Acta registrada con opción de corregir"><br><sub>Acta registrada</sub></td>
+  </tr>
+</table>
+
+---
+
 ## 1. Funcionalidades por rol
 
 | Rol | Qué puede hacer |
