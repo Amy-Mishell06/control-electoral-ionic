@@ -1,0 +1,58 @@
+<ion-content [fullscreen]="true">
+  <div class="pantalla">
+    <header class="fondo-huellas encabezado">
+      <div class="mascota">
+        <svg viewBox="0 0 64 64" width="68" height="68" fill="none" stroke="currentColor"
+             stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"
+             role="img" aria-label="Mascota de Yupana: oso de anteojos">
+          <circle cx="18" cy="17" r="6" /><circle cx="46" cy="17" r="6" />
+          <circle cx="32" cy="35" r="18" />
+          <circle cx="25" cy="32" r="6" /><circle cx="39" cy="32" r="6" />
+          <path d="M31 32 h2" /><ellipse cx="32" cy="44" rx="5" ry="3.5" />
+        </svg>
+      </div>
+      <h1>Yupana</h1>
+      <p>Cada voto, bien contado</p>
+    </header>
+
+    <form class="tarjeta" [formGroup]="form" (ngSubmit)="ingresar()" novalidate>
+      <h2>Iniciar sesión</h2>
+
+      <ion-input
+        formControlName="cedula"
+        label="Cédula"
+        labelPlacement="stacked"
+        fill="outline"
+        inputmode="numeric"
+        maxlength="10"
+        autocomplete="username"
+        [errorText]="mensajeCedula()">
+      </ion-input>
+
+      <ion-input
+        formControlName="clave"
+        type="password"
+        label="Contraseña"
+        labelPlacement="stacked"
+        fill="outline"
+        autocomplete="current-password"
+        errorText="Ingresa tu contraseña.">
+        <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+      </ion-input>
+
+      @if (error()) {
+        <p class="error-general" role="alert">{{ error() }}</p>
+      }
+
+      <ion-button type="submit" expand="block" [disabled]="cargando()">
+        @if (cargando()) {
+          <ion-spinner name="crescent"></ion-spinner>
+        } @else {
+          Ingresar
+        }
+      </ion-button>
+
+      <a class="enlace" routerLink="/recuperar">¿Olvidaste tu contraseña?</a>
+    </form>
+  </div>
+</ion-content>
