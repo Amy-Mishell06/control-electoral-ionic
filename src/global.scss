@@ -59,3 +59,59 @@ ion-toolbar.huellas {
   --background: #155e75 url('/assets/patrones/huellas-oso.svg') repeat;
   --color: #ffffff;
 }
+
+/* ===== Estilos comunes de pantallas (identidad Yupana) ===== */
+.contenedor {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-family: var(--app-font-titulos);
+}
+
+.tarjeta {
+  background: var(--app-superficie);
+  border-radius: var(--app-radio);
+  box-shadow: var(--app-sombra-tarjeta);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  h3 { margin: 0; font-size: 18px; font-weight: 700; }
+  p { margin: 0; color: var(--app-texto-secundario); }
+}
+
+.fila-titulo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  ion-icon { font-size: 24px; flex-shrink: 0; }
+}
+
+.texto-secundario { margin: 0; color: var(--app-texto-secundario); }
+
+.mensaje-error {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(var(--ion-color-danger-rgb), 0.12);
+  color: var(--ion-color-danger);
+  font-weight: 600;
+}
+
+.estado-vacio { text-align: center; padding: 32px 16px; color: var(--app-texto-secundario); }
+.centrado { display: flex; justify-content: center; padding: 32px; }
+
+ion-button { --border-radius: var(--app-radio); text-transform: none; font-weight: 700; }
+
+form.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  ion-input { --border-radius: var(--app-radio); }
+  ion-button { min-height: var(--app-boton-alto); margin: 0; font-size: 17px; }
+}

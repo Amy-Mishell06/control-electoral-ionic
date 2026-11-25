@@ -25,8 +25,25 @@ export const routes: Routes = [
   {
     path: 'provincial',
     canActivate: [authGuard, cambioClaveGuard, rolGuard('provincial')],
-    loadComponent: enConstruccion,
-    data: { titulo: 'Coordinación provincial' },
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./presentation/provincial/recintos/recintos.page').then((m) => m.RecintosPage),
+      },
+      {
+        path: 'recintos/nuevo',
+        loadComponent: () =>
+          import('./presentation/provincial/nuevo-recinto/nuevo-recinto.page')
+            .then((m) => m.NuevoRecintoPage),
+      },
+      {
+        path: 'recintos/:recintoId/coordinador',
+        loadComponent: () =>
+          import('./presentation/provincial/nuevo-coordinador/nuevo-coordinador.page')
+            .then((m) => m.NuevoCoordinadorPage),
+      },
+    ],
   },
   {
     path: 'recinto',

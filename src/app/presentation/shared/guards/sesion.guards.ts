@@ -6,15 +6,17 @@ import { Rol } from '../../../core/domain/models/rol.model';
 /** Sin sesión, al login (ADR-007). */
 export const authGuard: CanActivateFn = async () => {
   const sesion = inject(SesionService);
+  const router = inject(Router); // inject() siempre antes de cualquier await
   await sesion.listo();
-  return sesion.perfil() ? true : inject(Router).createUrlTree(['/login']);
+  return sesion.perfil() ? true : router.createUrlTree(['/login']);
 };
 
 /** Si ya hay sesión, no muestra el login: lleva al inicio de su rol. */
 export const invitadoGuard: CanActivateFn = async () => {
   const sesion = inject(SesionService);
+  const router = inject(Router); // inject() siempre antes de cualquier await
   await sesion.listo();
-  return sesion.perfil() ? inject(Router).createUrlTree([sesion.rutaInicio()]) : true;
+  return sesion.perfil() ? router.createUrlTree([sesion.rutaInicio()]) : true;
 };
 
 /** Primer acceso: obliga a activar la cuenta y cambiar la contraseña (R3, ADR-011). */
